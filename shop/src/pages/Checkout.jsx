@@ -102,7 +102,7 @@ function Checkout() {
             if (res.statusText === "OK") {
                 if (res.data && res.data.payment_session_id) {
                     console.log(res.data)
-                    setOrderId(res.data.order_id)
+                    setOrderId((prev) => res.data.order_id)
                     return res.data.payment_session_id
                 }
             } else {

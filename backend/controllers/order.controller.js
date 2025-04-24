@@ -119,7 +119,7 @@ const initiatePayment = asyncHandler(async (req, res) => {
 })
 
 const verifyPayment = asyncHandler(async (req, res) => {
-    let {
+    const {
         orderId
     } = req.body;
 
@@ -127,7 +127,7 @@ const verifyPayment = asyncHandler(async (req, res) => {
         try {
             const dbOrderData = await orders.updateMany(
                 { paymentOrderId: orderId },
-                { $set: { paymentProcess: "completed" } }
+                { $set: { paymentProcess: "verified" } }
             );
 
             if (!dbOrderData) {
