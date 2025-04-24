@@ -137,15 +137,13 @@ function Checkout() {
 
             console.log(res)
 
-            if (res.statusText === "OK") {
-                if (res.data && res.data.payment_session_id) {
-                    console.log(res.data);
-                    setOrderId(res.data.order_id); // still update state if needed elsewhere
-                    return {
-                        sessionId: res.data.payment_session_id,
-                        orderId: res.data.order_id
-                    };
-                }
+            if (res.data && res.data.payment_session_id) {
+                console.log(res.data);
+                setOrderId(res.data.order_id); // still update state if needed elsewhere
+                return {
+                    sessionId: res.data.payment_session_id,
+                    orderId: res.data.order_id
+                };
             } else {
                 console.log(res.data.message);
                 toast.error("Something went wrong while placing order");
@@ -164,25 +162,23 @@ function Checkout() {
                 orderId: id
             })
 
-            if (res.statusText === "OK") {
-                if (res && res.data) {
-                    toast.success("Payment verified")
-                    // removeAllProductsFromCart()
-                    // toast.success(responseData.message)
-                    // setBillingDetails({
-                    //     email: "",
-                    //     name: "",
-                    //     phoneNo: "",
-                    //     address1: "",
-                    //     address2: "",
-                    //     state: "",
-                    //     country: "India",
-                    //     pinCode: "",
-                    //     paymentMethod: ""
-                    // })
+            if (res && res.data) {
+                toast.success("Payment verified")
+                // removeAllProductsFromCart()
+                // toast.success(responseData.message)
+                // setBillingDetails({
+                //     email: "",
+                //     name: "",
+                //     phoneNo: "",
+                //     address1: "",
+                //     address2: "",
+                //     state: "",
+                //     country: "India",
+                //     pinCode: "",
+                //     paymentMethod: ""
+                // })
 
-                    // navigate("/order-success")
-                }
+                // navigate("/order-success")
             }
         } catch (error) {
             console.log(error)
