@@ -1177,6 +1177,5 @@ export {
     getOrderData,
     updateStatus,
     acceptOrder,
-    cancelOrder,
-    getCashfreeData
+    cancelOrder
 }
