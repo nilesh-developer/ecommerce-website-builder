@@ -21,6 +21,32 @@ const OrderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    totalPrice: {
+        type: Number
+    },
+    paymentOrderId: {
+        type: String
+    },
+    paymentProcess: {
+        type: String
+    },
+    paymentDetails: {
+        status: {
+            type: String
+        },
+        paymentProcess: {
+            type: String
+        },
+        paymentMode: {
+            type: String
+        },
+        paymentTime: {
+            type: String
+        },
+        paymentId: {
+            type: String
+        },
+    },
     email: {
         type: String,
         required: true
@@ -52,15 +78,6 @@ const OrderSchema = new mongoose.Schema({
     phoneNo: {
         type: String,
         required: true
-    },
-    totalPrice: {
-        type: Number
-    },
-    paymentOrderId: {
-        type: String
-    },
-    paymentProcess: {
-        type: String
     },
     isCouponApplied: {
         type: Boolean,

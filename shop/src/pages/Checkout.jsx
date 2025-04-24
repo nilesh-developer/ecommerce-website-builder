@@ -68,52 +68,7 @@ function Checkout() {
     ];
 
     //Start CashFree PG
-    // let cashfree;
-    // let insitialzeSDK = async function () {
-    //     cashfree = await load({
-    //         mode: "production",
-    //     })
-    // }
-
-    // insitialzeSDK()
-
     const [orderId, setOrderId] = useState("")
-
-    // const getSessionId = async () => {
-    //     try {
-    //         let res = await axios.post(`${import.meta.env.VITE_API_URL}/api/order/initiate-payment`, {
-    //             customerId: customerData._id,
-    //             customerName: billingDetails.name,
-    //             customerEmail: billingDetails.email,
-    //             amount: (calculateTotal() - discountValue),
-    //             phoneNo: billingDetails.phoneNo,
-    //             orderData: {
-    //                 storeId,
-    //                 custId: customerData._id,
-    //                 ...billingDetails,
-    //                 cart: [...cart],
-    //                 isCouponApplied,
-    //                 coupon,
-    //                 discountValue,
-    //                 totalPrice: (calculateTotal() - discountValue),
-    //             }
-    //         })
-
-    //         if (res.statusText === "OK") {
-    //             if (res.data && res.data.payment_session_id) {
-    //                 console.log(res.data)
-    //                 setOrderId((prev) => res.data.order_id)
-    //                 return res.data.payment_session_id
-    //             }
-    //         } else {
-    //             console.log(res.data.message)
-    //             toast.error("Something went wrong while placing order")
-    //             return null
-    //         }
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
 
     const getSessionId = async () => {
         try {
@@ -138,14 +93,12 @@ function Checkout() {
             console.log(res)
 
             if (res.data && res.data.payment_session_id) {
-                console.log(res.data);
                 setOrderId(res.data.order_id); // still update state if needed elsewhere
                 return {
                     sessionId: res.data.payment_session_id,
                     orderId: res.data.order_id
                 };
             } else {
-                console.log(res.data.message);
                 toast.error("Something went wrong while placing order");
                 return null;
             }
@@ -153,7 +106,6 @@ function Checkout() {
             console.log(error);
         }
     };
-
 
     const verifyPayment = async (id) => {
         try {
@@ -164,27 +116,11 @@ function Checkout() {
 
             if (res && res.data) {
                 toast.success("Payment verified")
-                // removeAllProductsFromCart()
-                // toast.success(responseData.message)
-                // setBillingDetails({
-                //     email: "",
-                //     name: "",
-                //     phoneNo: "",
-                //     address1: "",
-                //     address2: "",
-                //     state: "",
-                //     country: "India",
-                //     pinCode: "",
-                //     paymentMethod: ""
-                // })
-
-                // navigate("/order-success")
             }
         } catch (error) {
             console.log(error)
         }
     }
-
     // End Cashfree PG
 
     async function getStoreData() {
@@ -292,22 +228,6 @@ function Checkout() {
         e.preventDefault()
         try {
             //Start CashFree PG
-            // if (billingDetails.paymentMethod === "cashfree") {
-            //     let sessionId = await getSessionId()
-            //     const cashfree = await load({ mode: "production" }); // or "sandbox"
-            //     let checkoutOptions = {
-            //         paymentSessionId: sessionId,
-            //         redirectTarget: "_modal",
-            //     }
-
-            //     await cashfree.checkout(checkoutOptions).then((res) => {
-            //         console.log("payment initialized")
-            //         verifyPayment(orderId)
-            //     }).catch((error) => {
-            //         console.log(error)
-            //     })
-            // }
-
 
             if (billingDetails.paymentMethod === "cashfree") {
                 const sessionInfo = await getSessionId();

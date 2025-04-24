@@ -21,5 +21,6 @@ import ShippingPolicy from './ShippingPolicy'
 import ReturnPolicy from './ReturnPolicy'
 import AboutUs from '../pages/AboutUs'
 import QuickCheckout from '../pages/QuickCheckout'
+import PaymentResponsePage from '../pages/PaymentResponsePage'
 
-export { Header, Footer, Banner, Homepage, Shop, QuickCheckout, BottomNavbar, ProductCard, SearchPage, CustomerSignUp, CustomerLogin, Error, Category, Cart, ReturnPolicy, ShippingPolicy, AboutUs, Order, OrderPage, AccountContent, UpdatePassword, Checkout, Account }
+export { Header, Footer, Banner, Homepage, Shop, QuickCheckout, PaymentResponsePage, BottomNavbar, ProductCard, SearchPage, CustomerSignUp, CustomerLogin, Error, Category, Cart, ReturnPolicy, ShippingPolicy, AboutUs, Order, OrderPage, AccountContent, UpdatePassword, Checkout, Account }

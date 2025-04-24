@@ -1,11 +1,15 @@
 import { Router } from "express";
-import { acceptOrder, cancelOrder, codOrderPlaced, getAllOrders, getOrderData, initiatePayment, orderPlaced, storeOrders, updateStatus, verifyPayment } from "../controllers/order.controller.js";
+import { acceptOrder, cancelOrder, cashfreePaymentDetails, codOrderPlaced, getAllOrders, getOrderData, initiatePayment, orderPlaced, paymentDataByPaymentOrderId, storeOrders, updateStatus, verifyPayment } from "../controllers/order.controller.js";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
 const router = Router()
 
 router.route("/initiate-payment").post(initiatePayment)
 
 router.route("/verify-payment").post(verifyPayment)
+
+router.route("/update-cashfree-payment").post(cashfreePaymentDetails)
+
+router.route("/payment-status/:paymentOrderId").get(paymentDataByPaymentOrderId)
 
 router.route("/place-order").post(orderPlaced)
 

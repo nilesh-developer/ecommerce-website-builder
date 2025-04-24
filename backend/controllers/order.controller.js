@@ -101,6 +101,8 @@ const initiatePayment = asyncHandler(async (req, res) => {
             "customer_name": customerName,
             "customer_email": customerEmail
         },
+        return_url: `https://${process.env.FRONTEND_URI}/payment-response?order_id=${paymentOrderId}`,
+        notify_url: `https://${process.env.BACKEND_URI}/api/order/update-cashfree-payment`
     }
 
     Cashfree.PGCreateOrder("2023-08-01", request).then(async (response) => {
@@ -148,18 +150,66 @@ const verifyPayment = asyncHandler(async (req, res) => {
         }
     }
 
-    Cashfree.PGOrderFetchPayments("2023-08-01", orderId).then((response) => {
-        updateOrderPaymentStatusInDB(response)
+    Cashfree.PGOrderFetchPayments("2023-08-01", orderId).then(async (response) => {
+        await updateOrderPaymentStatusInDB(response)
         res.status(200).json({
-            message: "Transaction Successful"
+            message: "Transaction Verified"
         });
-    }).catch(error => {
-        transactionFailed()
+    }).catch(async (error) => {
+        await transactionFailed()
         console.error(error.response.data.message);
         res.status(400).json({
             message: "Transaction Failed"
         });
     })
+})
+
+const cashfreePaymentDetails = asyncHandler(async (req, res) => {
+    const { order_id, order_status, payment_mode, payment_time, cf_payment_id } = req.body;
+
+    const matchedOrders = await orders.find({ paymentOrderId: order_id });
+
+    if (!matchedOrders || matchedOrders.length === 0) {
+        return res.status(404).json({ message: 'Orders not found' });
+    }
+
+    const updatePromises = matchedOrders.map(async (order) => {
+        if (order_status === 'SUCCESS') {
+            order.paymentDetails.status = 'paid';
+            order.paymentProcess = 'completed';
+            order.paymentDetails.paymentProcess = 'completed';
+            order.paymentDetails.paymentMode = payment_mode;
+            order.paymentDetails.paymentTime = payment_time;
+            order.paymentDetails.paymentId = cf_payment_id;
+        } else if (order_status === 'FAILED') {
+            order.status = 'failed';
+            order.paymentProcess = 'failed';
+            order.paymentDetails.paymentProcess = 'failed';
+        }
+
+        return order.save();
+    });
+
+    await Promise.all(updatePromises);
+
+    return res.status(200).json({ message: 'Payment status updated for all related orders' });
+})
+
+const paymentDataByPaymentOrderId = asyncHandler(async (req, res) => {
+    const { paymentOrderId } = req.params;
+    const dbOrderData = await orders.findOne(
+        { paymentOrderId: paymentOrderId }
+    );
+
+    if (!dbOrderData) {
+        console.log("Not Found Payment")
+        return res.status(400).json({
+            message: "Not Found Payment"
+        })
+    }
+
+    return res.status(200).json({paymentProcess: dbOrderData.paymentProcess})
+
 })
 
 const orderPlaced = asyncHandler(async (req, res) => {
@@ -884,7 +934,6 @@ const codOrderPlaced = asyncHandler(async (req, res) => {
     );
 });
 
-
 const getAllOrders = asyncHandler(async (req, res) => {
     const { custId } = req.params;
 
@@ -895,7 +944,6 @@ const getAllOrders = asyncHandler(async (req, res) => {
             new ApiResponse(200, allOrders, "all orders fetched")
         )
 })
-
 
 const storeOrders = asyncHandler(async (req, res) => {
     const { storeId } = req.params;
@@ -1134,7 +1182,6 @@ const acceptOrder = asyncHandler(async (req, res) => {
         )
 })
 
-
 const cancelOrder = asyncHandler((async (req, res) => {
     const { orderId } = req.params;
     const { customerId } = req.body;
@@ -1164,6 +1211,8 @@ const cancelOrder = asyncHandler((async (req, res) => {
 export {
     initiatePayment,
     verifyPayment,
+    cashfreePaymentDetails,
+    paymentDataByPaymentOrderId,
     orderPlaced,
     codOrderPlaced,
     getAllOrders,

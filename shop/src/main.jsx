@@ -20,6 +20,7 @@ import {
   Homepage,
   Order,
   OrderPage,
+  PaymentResponsePage,
   QuickCheckout,
   ReturnPolicy,
   SearchPage,
@@ -37,6 +38,7 @@ import getSubdomain from './Hooks/getSubdomain.jsx'
 import { Toaster } from 'react-hot-toast';
 import Category from './pages/Category.jsx'
 import PaymentSuccess from './pages/PaymentSuccess.jsx'
+import PaymentFailed from './pages/PaymentFailed.jsx'
 import OrderSuccess from './pages/OrderSuccess.jsx'
 
 const router = createBrowserRouter(
@@ -60,6 +62,12 @@ const router = createBrowserRouter(
         <Route path='shipping-policy' element={<ShippingPolicy />} />
         <Route path='about' element={<AboutUs />} />
         <Route path='payment-success' element={<PaymentSuccess />} />
+        <Route path='payment-failed' element={<PaymentFailed />} />
+        <Route path='payment-response' element={
+          <CustomerPrivateRoute>
+            <PaymentResponsePage />
+          </CustomerPrivateRoute>
+        } />
         <Route path='quick-checkout' element={<QuickCheckout />} />
         <Route path='cart' element={<Cart />} />
         <Route path='checkout' element={
