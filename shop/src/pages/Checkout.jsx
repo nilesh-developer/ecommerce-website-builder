@@ -135,6 +135,8 @@ function Checkout() {
                 }
             });
 
+            console.log(res)
+
             if (res.statusText === "OK") {
                 if (res.data && res.data.payment_session_id) {
                     console.log(res.data);
@@ -158,29 +160,28 @@ function Checkout() {
     const verifyPayment = async (id) => {
         try {
 
-            let res = await axios.post(`${import.meta.env.VITE_API_URL}/api/order/verify-payment`, {
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/order/verify-payment`, {
                 orderId: id
             })
 
             if (res.statusText === "OK") {
                 if (res && res.data) {
                     toast.success("Payment verified")
+                    // removeAllProductsFromCart()
+                    // toast.success(responseData.message)
+                    // setBillingDetails({
+                    //     email: "",
+                    //     name: "",
+                    //     phoneNo: "",
+                    //     address1: "",
+                    //     address2: "",
+                    //     state: "",
+                    //     country: "India",
+                    //     pinCode: "",
+                    //     paymentMethod: ""
+                    // })
 
-                    removeAllProductsFromCart()
-                    toast.success(responseData.message)
-                    setBillingDetails({
-                        email: "",
-                        name: "",
-                        phoneNo: "",
-                        address1: "",
-                        address2: "",
-                        state: "",
-                        country: "India",
-                        pinCode: "",
-                        paymentMethod: ""
-                    })
-
-                    navigate("/order-success")
+                    // navigate("/order-success")
                 }
             }
         } catch (error) {
@@ -325,9 +326,9 @@ function Checkout() {
                 };
 
                 await cashfree.checkout(checkoutOptions)
-                    .then((res) => {
+                    .then(async (res) => {
                         console.log("payment initialized");
-                        verifyPayment(orderId); // ✅ now using correct orderId
+                        await verifyPayment(orderId); // now using correct orderId
                     })
                     .catch((error) => {
                         console.log(error);

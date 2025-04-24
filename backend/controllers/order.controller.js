@@ -87,13 +87,8 @@ const initiatePayment = asyncHandler(async (req, res) => {
             customer.couponsUsed.push(orderData?.coupon?.toUpperCase())
         }
 
-        // store.revenue = Number(store.revenue) + Number(totalPrice)
         await store.save();
         await customer.save();
-
-        // return res.status(200).json(
-        //     new ApiResponse(200, "", "Order Placed Successfully")
-        // );
     }
 
     let request = {
@@ -108,13 +103,12 @@ const initiatePayment = asyncHandler(async (req, res) => {
         },
     }
 
-    Cashfree.PGCreateOrder("2023-08-01", request).then(response => {
-        createOrderDB()
-        // console.log(response.data);
-        res.status(200).json(response.data);
+    Cashfree.PGCreateOrder("2023-08-01", request).then(async (response) => {
+        await createOrderDB(); // Ensure the DB is updated only after order creation
+        return res.status(200).json(response.data);
     }).catch(error => {
         console.error(error.response.data.message);
-        res.status(500).json(error.response.data);
+        return res.status(500).json(error.response.data);
     })
 })
 
