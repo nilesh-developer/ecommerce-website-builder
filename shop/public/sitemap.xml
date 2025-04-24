@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://demo.eazzy.store/</loc>
+    <lastmod>2023-09-29</lastmod>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://demo.eazzy.store/shop</loc>
+    <lastmod>2023-09-29</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://demo.eazzy.store/cart</loc>
+    <lastmod>2023-09-29</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://veelo.in/</loc>
+    <lastmod>2023-09-29</lastmod>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://veelo.in/shop</loc>
+    <lastmod>2023-09-29</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://veelo.in/cart</loc>
+    <lastmod>2023-09-29</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://veelo.in/login</loc>
+    <lastmod>2023-09-29</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://veelo.in/signup</loc>
+    <lastmod>2023-09-29</lastmod>
+    <priority>0.80</priority>
+  </url>
+</urlset>

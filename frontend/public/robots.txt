@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /seller
+Allow: /
+
+Sitemap: https://eazzy.store/sitemap.xml

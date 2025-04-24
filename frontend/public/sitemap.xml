@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://eazzy.store/</loc>
+    <lastmod>2023-09-17</lastmod>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://eazzy.store/login</loc>
+    <lastmod>2023-09-17</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://eazzy.store/signup</loc>
+    <lastmod>2023-09-17</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://eazzy.store/pricing</loc>
+    <lastmod>2023-09-17</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://eazzy.store/about</loc>
+    <lastmod>2023-09-17</lastmod>
+    <priority>0.80</priority>
+  </url>
+</urlset>

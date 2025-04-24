@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans; /* Apply Poppins as the default font globally */
+  }
+}
+
+:root{
+  background-color: #ffffff;
+  color: rgb(8, 8, 8);
+}
+
+/* scroll bar color and size customization */
+
+/* Hide scrollbar for Webkit browsers (Chrome, Safari, Edge) */
+.overflow-x-auto {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.overflow-x-auto::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, and Edge */
+}
