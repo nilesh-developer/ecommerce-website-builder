@@ -115,11 +115,11 @@ function Checkout() {
         }
     }
 
-    const verifyPayment = async () => {
+    const verifyPayment = async (id) => {
         try {
 
             let res = await axios.post(`${import.meta.env.VITE_API_URL}/api/order/verify-payment`, {
-                orderId: orderId
+                orderId: id
             })
 
             if (res.statusText === "OK") {
