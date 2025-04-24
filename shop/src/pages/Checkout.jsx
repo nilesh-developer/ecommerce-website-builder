@@ -68,14 +68,14 @@ function Checkout() {
     ];
 
     //Start CashFree PG
-    let cashfree;
-    let insitialzeSDK = async function () {
-        cashfree = await load({
-            mode: "production",
-        })
-    }
+    // let cashfree;
+    // let insitialzeSDK = async function () {
+    //     cashfree = await load({
+    //         mode: "production",
+    //     })
+    // }
 
-    insitialzeSDK()
+    // insitialzeSDK()
 
     const [orderId, setOrderId] = useState("")
 
@@ -257,14 +257,17 @@ function Checkout() {
             //Start CashFree PG
             if (billingDetails.paymentMethod === "cashfree") {
                 let sessionId = await getSessionId()
+                const cashfree = await load({ mode: "production" }); // or "sandbox"
                 let checkoutOptions = {
                     paymentSessionId: sessionId,
                     redirectTarget: "_modal",
                 }
 
-                cashfree.checkout(checkoutOptions).then((res) => {
+                await cashfree.checkout(checkoutOptions).then((res) => {
                     console.log("payment initialized")
                     verifyPayment(orderId)
+                }).catch((error) => {
+                    console.log(error)
                 })
             }
             //End CashFree PG
@@ -307,7 +310,9 @@ function Checkout() {
                 } else {
                     toast.error(responseData.message)
                 }
-            } else {
+            }
+            
+            if(billingDetails.paymentMethod === "") {
                 toast.error("Select atleast one payment method")
             }
         } catch (error) {

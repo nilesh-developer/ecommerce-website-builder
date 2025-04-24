@@ -69,7 +69,7 @@ const initiatePayment = asyncHandler(async (req, res) => {
                 isCouponApplied: orderData?.isCouponApplied,
                 discountValue: orderData?.discountValue,
                 coupon: orderData?.coupon,
-                product: { ...product, soldPrice: (product.salePrice - (discountValue / cart.length)) },
+                product: { ...product, soldPrice: (product.salePrice - (orderData?.discountValue / orderData?.cart.length)) },
                 status: "pending",
                 paymentOrderId,
                 paymentProcess: "initiated"
