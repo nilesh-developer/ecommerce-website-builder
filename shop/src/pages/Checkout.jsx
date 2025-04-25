@@ -66,6 +66,7 @@ function Checkout() {
         "Ladakh",
         "Jammu & Kashmir"
     ];
+    const [loadingBtn, setLoadingBtn] = useState(false)
 
     //Start CashFree PG
     const [orderId, setOrderId] = useState("")
@@ -241,8 +242,8 @@ function Checkout() {
     const handleCheckout = async (e) => {
         e.preventDefault()
         try {
+            setLoadingBtn(true)
             //Start CashFree PG
-
             if (billingDetails.email === "" || billingDetails.name === "" || billingDetails.address1 === "" || billingDetails.address2 === "" || billingDetails.state === "" || billingDetails.country === "" || billingDetails.pinCode === "") {
                 toast.error("All feilds are required")
                 return
@@ -316,6 +317,8 @@ function Checkout() {
             }
         } catch (error) {
             console.log(error)
+        } finally {
+            setLoadingBtn(false)
         }
     }
 
@@ -557,7 +560,7 @@ function Checkout() {
                         </div>
                         <button
                             onClick={handleCheckout}
-                            className="mt-4 mb-8 w-full rounded-md bg-zinc-900 px-6 py-3 font-medium text-white">Place Order</button>
+                            className="mt-4 mb-8 w-full flex items-center justify-center rounded-md px-6 py-3 font-medium bg-black text-white">{loadingBtn ? <span className="loading loading-spinner loading-sm"></span> : "Place Order"}</button>
                     </div>
 
 
