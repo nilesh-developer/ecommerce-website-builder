@@ -90,7 +90,8 @@ const OrderSchema = new mongoose.Schema({
         type: String
     },
     isTrackingDetailsProvided: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     trackingNo: {
         type: String

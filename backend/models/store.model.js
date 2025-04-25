@@ -96,15 +96,9 @@ const StoreSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    razorpay: {
+    cashfree: {
         type: Boolean,
-        default: false
-    },
-    razorpayKeyId: {
-        type: String
-    },
-    razorpayKeySecret: {
-        type: String
+        default: true
     },
     subdomain: {
         type: String,

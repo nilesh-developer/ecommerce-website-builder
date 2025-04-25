@@ -319,18 +319,18 @@ function Product() {
                 </Link>
                 :
                 <div>
-                  <button
+                  {/* <button
                     type="submit"
                     className="mt-4 lg:flex w-full items-center justify-center shadow-sm rounded-md px-8 py-3 text-xl font-medium text-white"
                     style={{ color: color2, backgroundColor: color1 }}
                     onClick={quickCheckout}
                   >
                     Order Now - Cash on Delivery
-                  </button>
+                  </button> */}
                   <button
                     type="submit"
                     className="mt-5 lg:flex w-full items-center justify-center shadow-sm rounded-md px-8 py-3 text-xl font-medium text-white"
-                    style={{ backgroundColor: color2, color: color1 }}
+                    style={{ backgroundColor: color1, color: color2 }}
                     onClick={() => handleAddToCart()}
                   >
                     Add to bag

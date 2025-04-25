@@ -14,7 +14,7 @@ export default function PaymentResponsePage() {
     const checkPaymentStatus = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/order/payment-status/${orderId}`);
-        if (res.data.paymentProcess === 'completed') {
+        if (res.data?.paymentProcess === 'completed') {
           setStatus('success');
           setTimeout(() => navigate('/payment-success'), 2000);
         } else {

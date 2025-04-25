@@ -325,27 +325,27 @@ const changeCodStatus = asyncHandler(async (req, res) => {
 
 })
 
-const changeRazorpayStatus = asyncHandler(async (req, res) => {
+const changeCashfreeStatus = asyncHandler(async (req, res) => {
     const { storeId } = req.params;
-    const { razorpayKeyId, razorpayKeySecret, status } = req.body;
+    const { status } = req.body;
 
     const store = await stores.findByIdAndUpdate(storeId,
         {
-            $set: { razorpay: status, razorpayKeyId, razorpayKeySecret, }
+            $set: { cashfree: status }
         },
         {
             new: true
         })
 
-    if (store.razorpay) {
+    if (store.cashfree) {
         return res.status(200)
             .json(
-                new ApiResponse(200, store, "Razorpay Activated")
+                new ApiResponse(200, store, "Payment method Activated")
             )
     } else {
         return res.status(200)
             .json(
-                new ApiResponse(200, store, "Razorpay deactivated"))
+                new ApiResponse(200, store, "Payment method deactivated"))
     }
 
 })
@@ -484,7 +484,7 @@ export {
     deleteStore,
     storeData,
     changeCodStatus,
-    changeRazorpayStatus,
+    changeCashfreeStatus,
     addUpi,
     changeUpiStatus,
     deleteUpiId,

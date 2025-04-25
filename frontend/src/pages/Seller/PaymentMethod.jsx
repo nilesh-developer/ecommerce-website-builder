@@ -9,9 +9,7 @@ function PaymentMethod() {
     const [store, setStore] = useState({})
     const [loading, setLoading] = useState(true);
     const [codStatus, setCodStatus] = useState(true);
-    const [razorpayStatus, setRazorpayStatus] = useState(false)
-    const [razorpayKeyId, setRazorpayKeyId] = useState('')
-    const [razorpayKeySecret, setRazorpayKeySecret] = useState("")
+    const [cashfreeStatus, setCashfreeStatus] = useState(false)
 
     const getStoreData = async () => {
         try {
@@ -26,8 +24,6 @@ function PaymentMethod() {
             if (response.ok) {
                 const responseData = await response.json();
                 setStore(responseData.data.store);
-                setRazorpayKeyId(responseData.data.store.razorpayKeyId);
-                setRazorpayKeySecret(responseData.data.store.razorpayKeySecret)
             }
 
             setLoading(false);
@@ -66,23 +62,23 @@ function PaymentMethod() {
         }
     }
 
-    const deactivateRazorpayStatus = async (e) => {
-        setRazorpayStatus(false)
+    const handleCashfreeStatus = async (e) => {
+        setCashfreeStatus(!cashfreeStatus)
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/store/razorpay/change-status/${store._id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/store/cashfree/change-status/${store._id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    status: false
+                    status: !cashfreeStatus
                 })
             })
 
             const responseData = await response.json()
             if (response.ok) {
                 toast.success(responseData.message)
-                getStoreData()
+                await getStoreData()
             } else {
                 toast.error(responseData.message)
             }
@@ -91,45 +87,13 @@ function PaymentMethod() {
         }
     }
 
-    const activateRazorpayStatus = async (e) => {
-        setRazorpayStatus(!razorpayStatus)
-        try {
-            if (razorpayKeyId === "" || razorpayKeySecret === "") {
-                toast.error("All feilds are required")
-            } else {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/store/razorpay/change-status/${store._id}`, {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        status: !razorpayStatus,
-                        razorpayKeyId,
-                        razorpayKeySecret
-                    })
-                })
+    // function closeModal() {
+    //     setIsOpen(false)
+    // }
 
-                const responseData = await response.json()
-                if (response.ok) {
-                    toast.success(responseData.message)
-                    getStoreData()
-                    closeModal()
-                } else {
-                    toast.error(responseData.message)
-                }
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    function closeModal() {
-        setIsOpen(false)
-    }
-
-    function openModal() {
-        setIsOpen(true)
-    }
+    // function openModal() {
+    //     setIsOpen(true)
+    // }
 
     if (loading) {
         return <div className='flex h-[calc(100vh-100px)] lg:h-screen w-full justify-center items-center'><span className="loading loading-spinner loading-lg"></span></div>
@@ -186,32 +150,32 @@ function PaymentMethod() {
                         </tr>
 
                         {/* For temporary basis starts */}
-                        <tr className="border-b border-opacity-20 border-gray-300 bg-gray-50 opacity-50 pointer-events-none">
+                        <tr className="border-b border-opacity-20 border-gray-300 bg-gray-50">
                             <td className="p-3 text-base tracking-tight">
-                                <p>Razorpay payment gateway (Coming soon)</p>
+                                <p>Online Payment</p>
                             </td>
                             <td className="p-3 text-base tracking-tight">
-                                <p>Razorpay</p>
+                                <p>Cashfree</p>
                             </td>
                             <td className="p-3 text-base tracking-tight">
-                                {false ?
+                                {store?.cashfree ?
                                     <p className='text-green-800 font-bold'>Active</p>
                                     :
                                     <p className='text-red-800 font-bold'>Inactive</p>
                                 }
                             </td>
                             <td className="p-3 text-base tracking-tight">
-                                {false ?
-                                    <button type='button' onClick={handleCodStatus} className="px-3 py-1 font-semibold rounded-md bg-red-600 text-gray-50">
+                                {store?.cashfree ?
+                                    <button type='button' onClick={handleCashfreeStatus} className="px-3 py-1 font-semibold rounded-md bg-red-600 text-gray-50">
                                         Deactivate
                                     </button>
-                                    : <button type='button' onClick={handleCodStatus} className="px-3 py-1 font-semibold rounded-md bg-green-700 text-gray-50">
+                                    : <button type='button' onClick={handleCashfreeStatus} className="px-3 py-1 font-semibold rounded-md bg-green-700 text-gray-50">
                                         Activate
                                     </button>
                                 }
                             </td>
                         </tr>
-                        <tr className="border-b border-opacity-20 border-gray-300 bg-gray-50 opacity-50 pointer-events-none">
+                        {/* <tr className="border-b border-opacity-20 border-gray-300 bg-gray-50 opacity-50 pointer-events-none">
                             <td className="p-3 text-base tracking-tight">
                                 <p>Paytm payment gateway (Coming soon)</p>
                             </td>
@@ -235,7 +199,7 @@ function PaymentMethod() {
                                     </button>
                                 }
                             </td>
-                        </tr>
+                        </tr> */}
                         {/* for temporary basis ends */}
 
                     </tbody>

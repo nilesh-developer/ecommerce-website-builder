@@ -90,7 +90,7 @@ function Order() {
 
             if (response.ok) {
                 const responseData = await response.json()
-                toast.success(`Order ${responseData.data._id} is canceled`)
+                toast.success(`Order ${responseData.data.name} is canceled`)
                 closeModal()
             } else {
                 toast.error("Failed to cancel order")

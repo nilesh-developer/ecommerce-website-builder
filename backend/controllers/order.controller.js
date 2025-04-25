@@ -115,25 +115,31 @@ const initiatePayment = asyncHandler(async (req, res) => {
 })
 
 const verifyPayment = asyncHandler(async (req, res) => {
-    const {
-        orderId
-    } = req.body;
+    const { orderId } = req.body;
 
     const updateOrderPaymentStatusInDB = async (response) => {
         try {
             const dbOrderData = await orders.updateMany(
                 { paymentOrderId: orderId },
-                { $set: { paymentProcess: "verified" } }
+                { $set: { paymentProcess: response[0]?.payment_status === "SUCCESS" ? "completed" : "failed", status: response[0]?.payment_status === "SUCCESS" ? "pending" : "canceled" } }
             );
 
             if (!dbOrderData) {
-                console.log("Order Payment Status is not updated")
+                console.log("Order Payment Status in DB is not Updated")
             }
 
-            const store = await stores.findById(dbOrderData.store)
-            store.revenue = Number(store.revenue) + Number(dbOrderData.totalPrice)
-            await store.save()
+            if (response[0]?.payment_status === "SUCCESS") {
+                const store = await stores.findById(dbOrderData.store)
+                store.revenue = Number(store.revenue) + Number(dbOrderData.totalPrice)
+                await store.save()
 
+                return res.status(200).json({
+                    message: "Transaction Successful"
+                });
+            }
+            return res.status(400).json({
+                message: "Transaction Failed"
+            });
         } catch (error) {
             console.log(error)
         }
@@ -152,9 +158,6 @@ const verifyPayment = asyncHandler(async (req, res) => {
 
     Cashfree.PGOrderFetchPayments("2023-08-01", orderId).then(async (response) => {
         await updateOrderPaymentStatusInDB(response)
-        res.status(200).json({
-            message: "Transaction Verified"
-        });
     }).catch(async (error) => {
         await transactionFailed()
         console.error(error.response.data.message);
@@ -208,8 +211,7 @@ const paymentDataByPaymentOrderId = asyncHandler(async (req, res) => {
         })
     }
 
-    return res.status(200).json({paymentProcess: dbOrderData.paymentProcess})
-
+    return res.status(200).json({ paymentProcess: dbOrderData.paymentProcess })
 })
 
 const orderPlaced = asyncHandler(async (req, res) => {

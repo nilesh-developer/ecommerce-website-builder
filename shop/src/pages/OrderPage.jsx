@@ -119,18 +119,29 @@ function OrderPage() {
                 </>
             }
 
-            <h3 className='lg:text-lg font-bold mt-4'>Shipment Details</h3>
-            <div className='border border-gray-400 rounded-lg p-4 mt-2'>
-                <b className='tracking-tighter'>Tracking No.</b>
-                <p className='text-sm'>{order?.trackingNo}</p><br />
-                <b className='tracking-tighter'>Tracking Page Url</b>
-                <p className='text-sm text-blue-700'><a href={order?.trackingPageUrl}>{order?.trackingPageUrl}</a></p>
-            </div>
+            {order?.isTrackingDetailsProvided && <>
+                <h3 className='lg:text-lg font-bold mt-4'>Shipment Details</h3>
+                <div className='border border-gray-400 rounded-lg p-4 mt-2'>
+                    <b className='tracking-tighter'>Tracking No.</b>
+                    <p className='text-sm'>{order?.trackingNo}</p><br />
+                    <b className='tracking-tighter'>Tracking Page Url</b>
+                    <p className='text-sm text-blue-700'><a href={order?.trackingPageUrl}>{order?.trackingPageUrl}</a></p>
+                </div>
+            </>
+            }
 
             <h3 className='lg:text-lg font-bold mt-4'>Payment infomation</h3>
             <div className='border border-gray-400 rounded-lg p-4 mt-2'>
-                <b className='tracking-tighter'>Payment method</b>
-                <p className='text-sm'>{order?.paymentMethod}</p>
+                <b className='tracking-tighter text-slate-600 font-semibold'>Payment method</b>
+                {order?.paymentMethod?.toUpperCase() === "COD" &&
+                    <p className='text-sm font-bold'>{order?.paymentMethod?.toUpperCase()}</p>
+                }
+                {order?.paymentMethod?.toUpperCase() === "CASHFREE" && <>
+                    <p className='text-sm'>{order?.paymentMethod?.toUpperCase()}</p>
+                    <b className='tracking-tighter text-slate-600 font-semibold'>Payment status</b>
+                    <p className='text-sm'>{order?.paymentDetails?.status?.toUpperCase() || "Processing"}</p>
+                </>
+                }
             </div>
             <h3 className='lg:text-lg font-bold mt-4'>Shipping Address</h3>
             <div className='border border-gray-400 rounded-lg p-4 mt-2 font-bold text-zinc-700'>

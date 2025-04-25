@@ -199,8 +199,8 @@ function Orders() {
                         <p>{order?.product?.quantity}</p>
                       </td>
                       <td className="p-3 text-base tracking-tight">
-                        <span className="bg-orange-200 px-2 text-orange-500 font-bold tracking-tighter py-1">
-                          <span>{order?.paymentMethod}</span>
+                        <span className="bg-green-100 px-2 text-green-500 font-semibold tracking-tighter py-1">
+                          <span>{order?.paymentMethod?.toUpperCase() === "COD" ? "COD" : "Online"}</span>
                         </span>
                       </td>
                       <td className="p-3 text-base tracking-tight">

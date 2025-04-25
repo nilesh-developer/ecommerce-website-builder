@@ -4,7 +4,7 @@ import {
     addUpi,
     businessdetails,
     changeCodStatus,
-    changeRazorpayStatus,
+    changeCashfreeStatus,
     changeStoreStatus,
     changeUpiStatus,
     createStore,
@@ -48,7 +48,7 @@ router.route("/subdomain/:subdomain").get(storeData)
 
 router.route("/cod/change-status/:storeId").patch(changeCodStatus)
 
-router.route("/razorpay/change-status/:storeId").patch(changeRazorpayStatus)
+router.route("/cashfree/change-status/:storeId").patch(changeCashfreeStatus)
 
 router.route("/upi/add/:storeId").patch(addUpi)
 
