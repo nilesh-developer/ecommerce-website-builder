@@ -139,7 +139,7 @@ function OrderPage() {
                 {order?.paymentMethod?.toUpperCase() === "CASHFREE" && <>
                     <p className='text-sm'>{order?.paymentMethod?.toUpperCase()}</p>
                     <b className='tracking-tighter text-slate-600 font-semibold'>Payment status</b>
-                    <p className='text-sm'>{order?.paymentDetails?.status?.toUpperCase() || "Processing"}</p>
+                    <p className='text-sm'>{order?.paymentProcess?.toUpperCase()}</p>
                 </>
                 }
             </div>
