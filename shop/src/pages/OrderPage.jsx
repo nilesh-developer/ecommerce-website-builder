@@ -137,9 +137,9 @@ function OrderPage() {
                     <p className='text-sm font-bold'>{order?.paymentMethod?.toUpperCase()}</p>
                 }
                 {order?.paymentMethod?.toUpperCase() === "CASHFREE" && <>
-                    <p className='text-sm'>{order?.paymentMethod?.toUpperCase()}</p>
+                    <p className='text-sm'>{"Online (via "+order?.paymentMethod?.toUpperCase()+" PG)"}</p>
                     <b className='tracking-tighter text-slate-600 font-semibold'>Payment status</b>
-                    <p className='text-sm'>{order?.paymentProcess?.toUpperCase()}</p>
+                    {order?.paymentProcess?.toUpperCase() === "FAILED" ? <p className='text-sm text-red-700'>{order?.paymentProcess?.toUpperCase()}</p> : <p className='text-sm'>{order?.paymentProcess?.toUpperCase()}</p> }
                 </>
                 }
             </div>

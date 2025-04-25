@@ -123,7 +123,7 @@ function Order() {
                     <p className='text-xs lg:text-base text-gray-600 mt-2'>Check the status of recent orders, manage returns, and discover similar products.</p>
                 </div>
 
-                {orders.length > 0 ?
+                {orders?.length > 0 ?
                     <div className='grid grid-flow-row gap-3 mt-3'>
                         {orders?.reverse()?.map((order, idx) => (
                             <div key={idx} className='bg-white rounded-xl border-[1px] border-gray-400 h-full w-full'>
@@ -147,12 +147,12 @@ function Order() {
 
                                 <div className='px-5 lg:px-10 py-5 lg:flex hidden'>
                                     <div className='w-1/4 h-24 flex justify-center items-center'>
-                                        <img className='h-full' src={order.product.images.featuredImage} alt="" />
+                                        <img className='h-full' src={order?.product?.images?.featuredImage} alt="" />
                                     </div>
                                     <div className='w-2/4'>
-                                        <h3 className='text-xl lg:text-2xl font-bold'>{order.product.name}</h3>
-                                        <p className='text-gray-600'>{order.product.quantity} item | {order.product.selectColor || order.product.selectSize || order.product.selectOther}</p>
-                                        <p className='mt-2'>Status: <span className='font-bold'>{(order?.status)[0].toUpperCase() + order?.status.slice(1)}</span></p>
+                                        <h3 className='text-xl lg:text-2xl font-bold'>{order?.product?.name}</h3>
+                                        <p className='text-gray-600'>{order?.product?.quantity} item | {order.product.selectColor || order.product.selectSize || order.product.selectOther}</p>
+                                        <p className='mt-2'>Status: {order?.status?.toUpperCase() === "CANCELED" ? <span className='font-bold text-red-700'>{order?.status?.toUpperCase()}</span> : <span className='font-bold text-green-700'>{order?.status?.toUpperCase()}</span>}</p>
                                     </div>
                                     <div className='w-1/4 grid grid-rows-2 gap-2 text-right'>
                                         <Link to={"/product/" + order.product._id} className="btn btn-primary text-white">View Product</Link>
