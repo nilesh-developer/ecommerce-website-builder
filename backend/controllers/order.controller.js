@@ -101,8 +101,10 @@ const initiatePayment = asyncHandler(async (req, res) => {
             "customer_name": customerName,
             "customer_email": customerEmail
         },
-        return_url: `https://${process.env.FRONTEND_URI}/payment-response?order_id=${paymentOrderId}`,
-        notify_url: `https://${process.env.BACKEND_URI}/api/order/update-cashfree-payment`
+        "order_meta": {
+            return_url: `https://${process.env.FRONTEND_URI}/payment-response?order_id=${paymentOrderId}`,
+            notify_url: `https://${process.env.BACKEND_URI}/api/order/update-cashfree-payment`
+        }
     }
 
     Cashfree.PGCreateOrder("2023-08-01", request).then(async (response) => {

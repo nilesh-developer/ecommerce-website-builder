@@ -261,8 +261,8 @@ function Checkout() {
 
                 let checkoutOptions = {
                     paymentSessionId: sessionId,
-                    redirectTarget: "_self",
-                }; // _model
+                    redirectTarget: "_modal",
+                }; // _self
 
                 await cashfree.checkout(checkoutOptions)
                     .then(async (res) => {

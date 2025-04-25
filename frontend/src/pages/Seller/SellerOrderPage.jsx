@@ -280,8 +280,10 @@ function SellerOrderPage() {
                 }
                 {order?.paymentMethod?.toUpperCase() === "CASHFREE" && <>
                     <p className='text-sm'>{order?.paymentMethod?.toUpperCase()}</p>
+                    <b className='tracking-tighter text-slate-600 font-semibold'>Payment Order ID</b>
+                    <p className='text-sm'>{order?.paymentOrderId}</p>
                     <b className='tracking-tighter text-slate-600 font-semibold'>Payment status</b>
-                    <p className='text-sm'>{order?.paymentDetails?.status?.toUpperCase() || "Processing"}</p>
+                    {order?.paymentProcess?.toUpperCase() === "FAILED" ? <p className='text-sm text-red-700'>{order?.paymentProcess?.toUpperCase()}</p> : <p className='text-sm'>{order?.paymentProcess?.toUpperCase()}</p> }     
                 </>
                 }
             </div>

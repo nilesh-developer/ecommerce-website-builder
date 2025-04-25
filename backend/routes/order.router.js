@@ -7,7 +7,7 @@ router.route("/initiate-payment").post(initiatePayment)
 
 router.route("/verify-payment").post(verifyPayment)
 
-router.route("/update-cashfree-payment").post(cashfreePaymentDetails)
+router.route("/update-cashfree-payment").post(cashfreePaymentDetails) //payment webhook. notify_url in cashfree
 
 router.route("/payment-status/:paymentOrderId").get(paymentDataByPaymentOrderId)
 
