@@ -119,9 +119,6 @@ function Checkout() {
                     orderId: id
                 })
             })
-            // const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/order/verify-payment`, {
-            //     orderId: id
-            // })
 
             if (response.ok) {
                 const responseData = await response.json()

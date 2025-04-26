@@ -55,7 +55,7 @@ function Quicktable() {
                         <tr>
                             <th className='text-slate-900'>Image</th>
                             <th className='text-slate-900'>Name</th>
-                            <th className='text-slate-900'>Qty</th>
+                            {/* <th className='text-slate-900'>Qty</th> */}
                             <th className='text-slate-900'>Price</th>
                             <th className='text-slate-900'>Details</th>
                         </tr>
@@ -65,16 +65,16 @@ function Quicktable() {
                             if (index < 4) {
                                 return <tr key={index}>
                                     <td>
-                                        <img className='h-10 w-10' src={order?.product?.images?.featuredImage} />
+                                        <img className='h-10 w-10' src={order?.product[0]?.images?.featuredImage} />
                                     </td>
                                     <td>
-                                        <p>{order.product.name}</p>
+                                        <p>{order?.product[0].name}</p>
                                     </td>
-                                    <td>
+                                    {/* <td>
                                         <p>{order.product.quantity}</p>
-                                    </td>
+                                    </td> */}
                                     <td>
-                                        <p>&#8377;{order.product.salePrice}</p>
+                                        <p>&#8377;{order?.totalPrice}</p>
                                     </td>
                                     <td>
                                         <Link to={"/seller/orders/" + order?._id} className='p-3 rounded-lg font-bold text-white bg-orange-600 tracking-wide'>Details</Link>

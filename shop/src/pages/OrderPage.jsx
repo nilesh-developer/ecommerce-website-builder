@@ -49,16 +49,18 @@ function OrderPage() {
             <h3 className='lg:text-lg font-bold mt-4'>Shipment details</h3>
             <div className='border border-gray-400 rounded-lg px-6 py-4 mt-2'>
                 <p>Status: <span className='font-bold'>{(order?.status)[0].toUpperCase() + order?.status.slice(1)}</span></p>
-                <div className='py-5 flex'>
-                    <div className='w-1/3 flex justify-center items-center h-20 lg:h-44 border-[0.5px] border-gray-400 rounded-lg'>
-                        <img className='h-full' src={order?.product?.images?.featuredImage} alt="product image" />
+                {order?.product?.map((odr, idx) => (
+                    <div className='py-5 flex'>
+                        <div className='w-1/3 flex justify-center items-center h-20 lg:h-44 border-[0.5px] border-gray-400 rounded-lg'>
+                            <img className='h-full' src={odr?.images?.featuredImage} alt="product image" />
+                        </div>
+                        <div className='w-2/3 px-3'>
+                            <h3 className='font-bold'>{odr?.name}</h3>
+                            <p className='font-semibold'>&#8377;{odr?.salePrice}</p>
+                            <p className='mt-2 font-semibold text-gray-500'>Qty: {odr?.quantity} {odr?.selectColor}</p>
+                        </div>
                     </div>
-                    <div className='w-2/3 px-3'>
-                        <h3 className='font-bold'>{order?.product?.name}</h3>
-                        <p className='font-semibold'>&#8377;{order?.product?.soldPrice}</p>
-                        <p className='mt-2 font-semibold text-gray-500'>Qty: {order?.product?.quantity} {order?.product?.selectColor}</p>
-                    </div>
-                </div>
+                ))}
             </div>
             {order?.status === "rejected" ? null :
                 <>
@@ -137,9 +139,9 @@ function OrderPage() {
                     <p className='text-sm font-bold'>{order?.paymentMethod?.toUpperCase()}</p>
                 }
                 {order?.paymentMethod?.toUpperCase() === "CASHFREE" && <>
-                    <p className='text-sm'>{"Online (via "+order?.paymentMethod?.toUpperCase()+" PG)"}</p>
+                    <p className='text-sm'>{"Online (via " + order?.paymentMethod?.toUpperCase() + " PG)"}</p>
                     <b className='tracking-tighter text-slate-600 font-semibold'>Payment status</b>
-                    {order?.paymentProcess?.toUpperCase() === "FAILED" ? <p className='text-sm text-red-700'>{order?.paymentProcess?.toUpperCase()}</p> : <p className='text-sm'>{order?.paymentProcess?.toUpperCase()}</p> }
+                    {order?.paymentProcess?.toUpperCase() === "FAILED" ? <p className='text-sm text-red-700'>{order?.paymentProcess?.toUpperCase()}</p> : <p className='text-sm'>{order?.paymentProcess?.toUpperCase()}</p>}
                 </>
                 }
             </div>
@@ -162,11 +164,11 @@ function OrderPage() {
                     <b>Order Total:</b>
                 </div>
                 <div className='w-1/3'>
-                    <p>Rs. {order?.product?.salePrice.toFixed(2)}</p>
+                    <p>Rs. {order?.totalPrice?.toFixed(2)}</p>
                     <p>Rs. 0.00</p>
                     <p>Rs. 0.00</p>
-                    <p>Rs. -{(Number(order?.product?.salePrice) - Number(order?.product?.soldPrice)).toFixed(2)}</p>
-                    <b className='text-green-800'>Rs. {order?.product?.soldPrice.toFixed(2)}</b>
+                    <p>{Number(order?.discountValue) === 0 ? "Free" : `Rs. -${Number(order?.discountValue)}`}</p>
+                    <b className='text-green-800'>Rs. {order?.totalPrice?.toFixed(2)}</b>
                 </div>
             </div>
         </div>

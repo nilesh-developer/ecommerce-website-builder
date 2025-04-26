@@ -7,7 +7,8 @@ import { Dialog, Transition } from '@headlessui/react';
 
 function SellerOrderPage() {
     const { id } = useParams()
-    const { token } = useAuth()
+    const { token, userData } = useAuth();
+    const [store, setStore] = useState({})
     let [isOpen, setIsOpen] = useState(false);
     let [openAccept, setOpenAccept] = useState(false);
     const [order, setOrder] = useState({})
@@ -138,6 +139,14 @@ function SellerOrderPage() {
         }
     }
 
+    useEffect(() => {
+        if (userData) {
+            setStore(userData?.store)
+        }
+    }, [userData])
+
+    console.log(store)
+
 
     if (loading) {
         return <div className='flex h-[calc(100vh-100px)] lg:h-screen w-full justify-center items-center'><span className="loading loading-spinner loading-lg"></span></div>
@@ -155,24 +164,26 @@ function SellerOrderPage() {
                 <div className='w-2/3'>
                     <p className='font-semibold ml-3'>{dateFormat(order?.createdAt, "mediumDate")}</p>
                     <p className='font-semibold ml-3 truncate'>{order?._id}</p>
-                    <p className='font-semibold ml-3'>&#8377;{order?.product?.soldPrice}</p>
+                    <p className='font-semibold ml-3'>&#8377;{order?.totalPrice}</p>
                 </div>
             </div>
             <h3 className='lg:text-lg font-bold mt-4'>Product details</h3>
             <div className='border border-gray-400 rounded-lg px-6 mt-2'>
-                <div className='py-5 flex'>
-                    <div className='w-1/3 flex justify-center items-center h-20 lg:h-44 border-[0.5px] border-gray-400 rounded-lg'>
-                        <img className='h-full' src={order?.product?.images.featuredImage} alt="" />
+                {order?.product?.map((odr, idx) => (
+                    <div className='py-5 flex'>
+                        <div className='w-1/3 flex justify-center items-center h-20 lg:h-44 border-[0.5px] border-gray-400 rounded-lg'>
+                            <img className='h-full' src={odr?.images?.featuredImage} alt="product image" />
+                        </div>
+                        <div className='w-2/3 px-3'>
+                            <Link to={`https://${store?.subdomain}/product/${odr?._id}`}>
+                                <p className='font-semibold text-xs'><span className='text-gray-800 truncate'>Product Id:</span> {order?.product[0]?._id}</p>
+                                <h3 className='font-bold'>{odr?.name}</h3>
+                                <p className='font-semibold'>&#8377;{odr?.salePrice}</p>
+                                <p className='mt-2 font-semibold text-gray-500'>Qty: {odr?.quantity} {odr?.selectColor} {odr?.selectSize} {odr?.selectOther}</p>
+                            </Link>
+                        </div>
                     </div>
-                    <div className='w-2/3 px-3'>
-                        <Link to={`/seller/edit-product/${order?.product?._id}`}>
-                            <p className='font-semibold text-xs'><span className='text-gray-800 truncate'>Product Id:</span> {order?.product?._id}</p>
-                            <h3 className='font-bold'>{order?.product?.name}</h3>
-                            <p className='font-semibold'>&#8377;{order?.product?.soldPrice}</p>
-                            <p className='mt-2 font-semibold text-gray-500'>Qty: {order?.product?.quantity} {order?.product?.selectColor} {order?.product?.selectSize} {order?.product?.selectOther}</p>
-                        </Link>
-                    </div>
-                </div>
+                ))}
             </div>
             <h3 className='lg:text-lg font-bold mt-4'>Status</h3>
             <div className='w-full border border-gray-400 rounded-lg p-4 mt-2'>
@@ -279,11 +290,11 @@ function SellerOrderPage() {
                     <p className='text-sm font-bold'>{order?.paymentMethod?.toUpperCase()}</p>
                 }
                 {order?.paymentMethod?.toUpperCase() === "CASHFREE" && <>
-                    <p className='text-sm'>{order?.paymentMethod?.toUpperCase()}</p>
+                    <p className='text-sm'>{"Online (via " + order?.paymentMethod?.toUpperCase() + " PG)"}</p>
                     <b className='tracking-tighter text-slate-600 font-semibold'>Payment Order ID</b>
                     <p className='text-sm'>{order?.paymentOrderId}</p>
                     <b className='tracking-tighter text-slate-600 font-semibold'>Payment status</b>
-                    {order?.paymentProcess?.toUpperCase() === "FAILED" ? <p className='text-sm text-red-700'>{order?.paymentProcess?.toUpperCase()}</p> : <p className='text-sm'>{order?.paymentProcess?.toUpperCase()}</p> }     
+                    {order?.paymentProcess?.toUpperCase() === "FAILED" ? <p className='text-sm text-red-700'>{order?.paymentProcess?.toUpperCase()}</p> : <p className='text-sm'>{order?.paymentProcess?.toUpperCase()}</p>}
                 </>
                 }
             </div>
@@ -306,11 +317,11 @@ function SellerOrderPage() {
                     <b>Order Total:</b>
                 </div>
                 <div className='w-1/3'>
-                    <p>Rs. {order?.product?.salePrice.toFixed(2)}</p>
+                    <p>Rs. {order?.totalPrice?.toFixed(2)}</p>
                     <p>Rs. 0.00</p>
                     <p>Rs. 0.00</p>
-                    <p>Rs. -{(Number(order?.product?.salePrice) - Number(order?.product?.soldPrice)).toFixed(2)}</p>
-                    <b className='text-green-800'>Rs. {order?.product?.soldPrice.toFixed(2)}</b>
+                    <p>{Number(order?.discountValue) === 0 ? "Free" : `Rs. -${Number(order?.discountValue)}`}</p>
+                    <b className='text-green-800'>Rs. {order?.totalPrice?.toFixed(2)}</b>
                 </div>
             </div>
             <Transition appear show={isOpen} as={Fragment}>

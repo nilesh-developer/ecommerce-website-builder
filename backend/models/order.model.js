@@ -10,7 +10,7 @@ const OrderSchema = new mongoose.Schema({
         ref: "stores"
     },
     product: {
-        type: Object,
+        type: Array,
         required: true
     },
     status: {

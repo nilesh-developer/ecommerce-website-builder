@@ -174,7 +174,6 @@ function Orders() {
                     <th className="p-3 text-base tracking-tighter">Image</th>
                     <th className="p-3 text-base tracking-tighter">Name</th>
                     <th className="p-3 text-base tracking-tighter">Date</th>
-                    <th className="p-3 text-base tracking-tighter">Items</th>
                     <th className="p-3 text-base tracking-tighter">Payment</th>
                     <th className="p-3 text-base tracking-tighter">Amount</th>
                     <th className="p-3 text-base tracking-tighter">Status</th>
@@ -187,16 +186,13 @@ function Orders() {
                         <Link to={"/seller/orders/" + order?._id} className='underline font-semibold'>{"#" + order?._id}</Link>
                       </td>
                       <td className="p-3 text-base tracking-tight">
-                        <img className='h-7 w-7' src={order?.product?.images?.featuredImage} alt="" />
+                        <img className='h-7 w-7' src={order?.product[0]?.images?.featuredImage} alt="" />
                       </td>
                       <td className="p-3 text-base tracking-tight">
-                        <p className=''>{order?.product?.name}</p>
+                        <p className=''>{order?.product[0]?.name}</p>
                       </td>
                       <td className="p-3 text-base tracking-tight">
                         <p>{dateFormat(order?.createdAt, "mediumDate")}</p>
-                      </td>
-                      <td className="p-3 text-base tracking-tight">
-                        <p>{order?.product?.quantity}</p>
                       </td>
                       <td className="p-3 text-base tracking-tight">
                         <span className="bg-green-100 px-2 text-green-500 font-semibold tracking-tighter py-1">
@@ -204,7 +200,7 @@ function Orders() {
                         </span>
                       </td>
                       <td className="p-3 text-base tracking-tight">
-                        <p className='font-bold trac'>{"Rs. " + order?.product?.salePrice}</p>
+                        <p className='font-bold trac'>{"Rs. " + order?.totalPrice}</p>
                       </td>
                       {order?.status === 'pending' ?
                         <td className="p-3 text-base tracking-tight">

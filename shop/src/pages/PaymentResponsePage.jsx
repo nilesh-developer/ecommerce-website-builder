@@ -11,6 +11,10 @@ export default function PaymentResponsePage() {
   const orderId = searchParams.get('order_id');
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
+
+  useEffect(() => {
     const checkPaymentStatus = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/order/payment-status/${orderId}`);

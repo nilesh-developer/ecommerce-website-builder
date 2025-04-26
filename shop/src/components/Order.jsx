@@ -103,6 +103,8 @@ function Order() {
         }
     }
 
+    console.log(orders[0])
+
     if (loading) {
         return <div className='flex h-screen w-full justify-center items-center'><span className="loading loading-spinner loading-lg"></span></div>;
     }
@@ -138,7 +140,7 @@ function Order() {
                                     </div>
                                     <div className='hidden lg:block'>
                                         <h3 className='font-bold'>Total Amount</h3>
-                                        <p className='text-gray-700 font-semibold'>&#8377;{order.product.soldPrice}</p>
+                                        <p className='text-gray-700 font-semibold'>&#8377;{order.totalPrice}</p>
                                     </div>
                                     <Link to={"/order/" + order._id} className='w-full text-right mt-3'>
                                         <h3 className='font-bold'>Details</h3>
@@ -147,36 +149,36 @@ function Order() {
 
                                 <div className='px-5 lg:px-10 py-5 lg:flex hidden'>
                                     <div className='w-1/4 h-24 flex justify-center items-center'>
-                                        <img className='h-full' src={order?.product?.images?.featuredImage} alt="" />
+                                        <img className='h-full' src={order?.product[0]?.images?.featuredImage} alt="" />
                                     </div>
                                     <div className='w-2/4'>
-                                        <h3 className='text-xl lg:text-2xl font-bold'>{order?.product?.name}</h3>
-                                        <p className='text-gray-600'>{order?.product?.quantity} item | {order.product.selectColor || order.product.selectSize || order.product.selectOther}</p>
+                                        <h3 className='text-xl lg:text-2xl font-bold'>{order?.product[0]?.name}</h3>
+                                        <p className='text-gray-600'>{order?.product[0]?.quantity} item</p>
                                         <p className='mt-2'>Status: {order?.status?.toUpperCase() === "CANCELED" ? <span className='font-bold text-red-700'>{order?.status?.toUpperCase()}</span> : <span className='font-bold text-green-700'>{order?.status?.toUpperCase()}</span>}</p>
                                     </div>
                                     <div className='w-1/4 grid grid-rows-2 gap-2 text-right'>
-                                        <Link to={"/product/" + order.product._id} className="btn btn-primary text-white">View Product</Link>
+                                        <Link to={"/product/" + order.product[0]._id} className="btn btn-primary text-white">View Product</Link>
                                         {order.status !== "delivered" ?
                                             <>
                                                 {order.status === "canceled" ?
-                                                    <Link to={"/product/" + order.product._id} className="btn btn-neutral text-white">Buy again</Link>
+                                                    <Link to={"/product/" + order.product[0]._id} className="btn btn-neutral text-white">Buy again</Link>
                                                     :
                                                     <button onClick={(e) => openModal(order._id)} className="btn btn-neutral text-white">{canceling ? <span className="loading loading-spinner loading-md"></span> : "Cancel"}</button>
                                                 }
                                             </>
                                             :
-                                            <Link to={"/product/" + order.product._id} className="btn btn-neutral text-white">Buy again</Link>
+                                            <Link to={"/product/" + order.product[0]._id} className="btn btn-neutral text-white">Buy again</Link>
                                         }
                                     </div>
                                 </div>
 
                                 <div className='px-5 py-5 flex lg:hidden'>
                                     <div className='w-1/3 flex justify-center items-center h-20 border-[0.5px] border-gray-400 rounded-lg'>
-                                        <img className='h-full' src={order.product.images.featuredImage} alt="" />
+                                        <img className='h-full' src={order.product[0].images.featuredImage} alt="" />
                                     </div>
                                     <div className='w-2/3 px-3'>
-                                        <h3 className='font-bold'>{order.product.name}</h3>
-                                        <p className='font-semibold'>&#8377;{order.product.soldPrice}</p>
+                                        <h3 className='font-bold'>{order.product[0].name}</h3>
+                                        <p className='font-semibold'>&#8377;{order.totalPrice}</p>
                                         {order?.status === "delivered" ?
                                             <p className='mt-2 font-semibold text-green-700'>{(order?.status)[0].toUpperCase() + order?.status.slice(1)}</p>
                                             :
@@ -192,17 +194,17 @@ function Order() {
                                 </div>
 
                                 <div className='px-5 py-5 border-t-[1px] border-gray-300 grid grid-cols-2 lg:hidden'>
-                                    <Link to={"/product/" + order.product._id} className='font-bold text-center border-r-[1px] border-gray-300'>View Product</Link>
+                                    <Link to={"/product/" + order.product[0]._id} className='font-bold text-center border-r-[1px] border-gray-300'>View Product</Link>
                                     {order.status !== "delivered" ?
                                         <>
                                             {order.status === "canceled" ?
-                                                <Link to={"/product/" + order.product._id} className='font-bold text-center'>Buy again</Link>
+                                                <Link to={"/product/" + order.product[0]._id} className='font-bold text-center'>Buy again</Link>
                                                 :
                                                 <button onClick={(e) => openModal(order._id)} className='font-bold text-center'>{canceling ? <span className="loading loading-spinner loading-md"></span> : "Cancel"}</button>
                                             }
                                         </>
                                         :
-                                        <Link to={"/product/" + order.product._id} className='font-bold text-center'>Buy again</Link>
+                                        <Link to={"/product/" + order.product[0]._id} className='font-bold text-center'>Buy again</Link>
                                     }
                                 </div>
                             </div>
