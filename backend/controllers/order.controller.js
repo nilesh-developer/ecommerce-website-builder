@@ -188,11 +188,11 @@ const cashfreePaymentDetails = asyncHandler(async (req, res) => {
             order.paymentDetails.paymentTime = payment_time;
             order.paymentDetails.paymentId = cf_payment_id;
 
-            const itemsHTML = matchedOrders?.map((odr) => `
+            const itemsHTML = matchedOrders?.product?.map((product) => `
     <tr>
-        <td>${odr?.product?.name}</td>
-        <td>${odr?.product?.quantity}</td>
-        <td>&#8377;${odr?.product?.salePrice}</td>
+        <td>${product?.name}</td>
+        <td>${product?.quantity}</td>
+        <td>&#8377;${product?.salePrice}</td>
     </tr>
 `).join('');
 
@@ -489,13 +489,13 @@ const cashfreePaymentDetails = asyncHandler(async (req, res) => {
             order.paymentProcess = 'failed';
             order.paymentDetails.paymentProcess = 'failed';
 
-            const itemsHTML = matchedOrders?.map((odr) => `
-            <tr>
-                <td>${odr?.product?.name}</td>
-                <td>${odr?.product?.quantity}</td>
-                <td>&#8377;${odr?.product?.salePrice}</td>
-            </tr>
-        `).join('');
+            const itemsHTML = matchedOrders?.product?.map((product) => `
+    <tr>
+        <td>${product?.name}</td>
+        <td>${product?.quantity}</td>
+        <td>&#8377;${product?.salePrice}</td>
+    </tr>
+`).join('');
 
 
             const emailProvider = nodeMailer.createTransport({
@@ -1217,11 +1217,11 @@ const codOrderPlaced = asyncHandler(async (req, res) => {
 
     const date = new Date(ordered.createdAt);
 
-    const itemsHTML = ordered.map((odr) => `
+    const itemsHTML = ordered.product?.map((product) => `
     <tr>
-        <td>${odr.product?.name}</td>
-        <td>${odr.product?.quantity}</td>
-        <td>&#8377;${odr.product?.salePrice}</td>
+        <td>${product?.name}</td>
+        <td>${product?.quantity}</td>
+        <td>&#8377;${product?.salePrice}</td>
     </tr>
 `).join('');
 
@@ -1240,7 +1240,7 @@ const codOrderPlaced = asyncHandler(async (req, res) => {
     const receiver = {
         from: `${store.name} <${process.env.OTP_EMAIL_ID}>`,
         to: customer.email,
-        subject: `Your Order for ${ordered.product.name} has been successfully placed`,
+        subject: `Your Order has been successfully placed`,
         html: `<!DOCTYPE html>
 <html lang="en">
 <head>
