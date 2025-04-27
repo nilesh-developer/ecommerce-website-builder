@@ -70,7 +70,7 @@ const router = createBrowserRouter(
         <Route path='' element={<Home />} />
         <Route path='signup' element={<SignUp />} />
         <Route path='login' element={<Login />} />
-        <Route path='pricing' element={<Pricing />} />
+        {/* <Route path='pricing' element={<Pricing />} /> */}
         <Route path='checkout' element={<Checkout />} />
         <Route path='terms-and-conditions' element={<TermsAndConditions />} />
         <Route path='privacy-policy' element={<PrivacyPolicy />} />

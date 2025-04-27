@@ -68,7 +68,7 @@ const BusinessDetails = () => {
           toast.success("Store created successfully")
           navigate("/seller/dashboard")
       } else {
-          toast.error("Sumething went wrong")
+          toast.error("Something went wrong")
       }
   } catch (error) {
       console.log(error)
@@ -159,7 +159,7 @@ const BusinessDetails = () => {
               type="submit"
               className="w-full bg-orange-500 text-lg font-bold text-white py-4 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
             >
-              Next
+              Submit
             </button>
           </div>
         </form>

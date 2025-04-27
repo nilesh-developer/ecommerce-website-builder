@@ -33,7 +33,7 @@ export default function Footer() {
               <h3 className="text-white font-semibold mb-4">Eazzy</h3>
               <ul className="space-y-2">
                 <li><a href="about-us" className="hover:text-white transition-colors duration-200">About Us</a></li>
-                <li><a href="pricing" className="hover:text-white transition-colors duration-200">Pricing</a></li>
+                {/* <li><a href="pricing" className="hover:text-white transition-colors duration-200">Pricing</a></li> */}
                 <li><a href="contact-us" className="hover:text-white transition-colors duration-200">Contact Us</a></li>
                 <li><a href="terms-and-conditions" className="hover:text-white transition-colors duration-200">Terms & Conditions</a></li>
               </ul>

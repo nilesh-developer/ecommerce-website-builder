@@ -287,8 +287,9 @@ const registerUser = asyncHandler(async (req, res) => {
 
     const created = await subscriptions.create({
         userId: user._id,
-        period: 4, //no. of month free subscription
+        period: 120, //no. of month free subscription
         price: 0,
+        planType: "Free",
         upiId: "Eazzy Free Trial",
         failed: false,
         status: true

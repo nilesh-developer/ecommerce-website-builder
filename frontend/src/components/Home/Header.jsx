@@ -40,9 +40,9 @@ function Header() {
                     <NavLink to="/" className={({ isActive }) => `text-sm font-semibold leading-6 ${isActive ? "text-orange-600" : " text-zinc-900"}`}>
                         Home
                     </NavLink>
-                    <NavLink to="pricing" className={({ isActive }) => `text-sm font-semibold leading-6 ${isActive ? "text-orange-600" : " text-zinc-900"}`}>
+                    {/* <NavLink to="pricing" className={({ isActive }) => `text-sm font-semibold leading-6 ${isActive ? "text-orange-600" : " text-zinc-900"}`}>
                         Pricing
-                    </NavLink>
+                    </NavLink> */}
                     <NavLink to="terms-and-conditions" className={({ isActive }) => `text-sm font-semibold leading-6 ${isActive ? "text-orange-600" : " text-zinc-900"}`}>
                         Terms & Conditions
                     </NavLink>
@@ -164,12 +164,12 @@ function Header() {
                     <div className="mt-6 flow-root">
                         <div className="-my-6 divide-y divide-orange-500/10">
                             <div className="space-y-2 py-6">
-                                <Link
+                                {/* <Link
                                     to="pricing"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-orange-50"
                                 >
                                     <button onClick={() => setMobileMenuOpen(false)}>Pricing</button>
-                                </Link>
+                                </Link> */}
                                 <Link
                                     to="terms-and-conditions"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-orange-50"

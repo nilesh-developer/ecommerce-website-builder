@@ -58,6 +58,13 @@ const businessdetails = asyncHandler(async (req, res) => {
         phoneNo: mobileNo
     })
 
+    if(!store){
+        return res.status(400)
+        .json(
+            new ApiResponse(400, "", "Something went wrong while adding business details")
+        )
+    }
+
     return res.status(200)
         .json(
             new ApiResponse(200, "", "Business Details Submitted")

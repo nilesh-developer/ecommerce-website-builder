@@ -9,7 +9,7 @@ function PremiumRoute({ children }) {
         return <div className='flex h-dvh w-full justify-center items-center'><span className="loading loading-spinner loading-lg"></span></div>
     }
 
-    return user?.subcription ? children : <Navigate to="/pricing" />
+    return user?.subcription ? children : <Navigate to="/" /> //  /pricing
 }
 
 export default PremiumRoute
