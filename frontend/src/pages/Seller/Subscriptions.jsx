@@ -72,7 +72,7 @@ function Subscriptions() {
                 transaction.expiresOn.split("T")[0],
                 transaction.failed ? "Failed" : "Success",
                 transaction.status ? "Received" : "In Review",
-                transaction.price
+                "Rs. "+transaction.price
             ];
             tableRows.push(orderData);
         });
