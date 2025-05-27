@@ -27,6 +27,8 @@ import EditCategory from "../../pages/Seller/EditCategory";
 import StoreAboutPage from "../../pages/Seller/StoreAboutPage";
 import AddCoupon from "../../pages/Seller/AddCoupon";
 import SellerOrderPage from "../../pages/Seller/SellerOrderPage";
+import AddPaymentDetails from "../../pages/Seller/AddPaymentDetails";
+import Payout from "../../pages/Seller/Payout";
 import Subscriptions from "../../pages/Seller/Subscriptions";
 
 export {
@@ -59,5 +61,7 @@ export {
     AddCategory,
     EditCategory,
     AddCoupon,
+    AddPaymentDetails,
+    Payout,
     SellerOrderPage
 }

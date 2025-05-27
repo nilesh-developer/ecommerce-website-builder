@@ -111,6 +111,10 @@ const StoreSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    currentWeekPendingPayout: {
+        type: Number,
+        default: 0
+    },
     metaTitle: {
         type: String
     },
@@ -125,6 +129,27 @@ const StoreSchema = new mongoose.Schema({
     },
     aboutContent: {
         type: String
+    },
+    paymentDetails: {
+        type: {
+            type: String,
+            enum: ['bankTransfer', 'upi']
+        },
+        bankName: {
+            type: String,
+        },
+        ifsc: {
+            type: String,
+        },
+        accountNo: {
+            type: String,
+        },
+        accountHolderName: {
+            type: String,
+        },
+        upiId: {
+            type: String
+        }
     },
     whatsApp: {
         type: Number

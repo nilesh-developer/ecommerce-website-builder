@@ -145,9 +145,6 @@ function SellerOrderPage() {
         }
     }, [userData])
 
-    console.log(store)
-
-
     if (loading) {
         return <div className='flex h-[calc(100vh-100px)] lg:h-screen w-full justify-center items-center'><span className="loading loading-spinner loading-lg"></span></div>
     }
@@ -320,7 +317,7 @@ function SellerOrderPage() {
                     <p>Rs. {order?.totalPrice?.toFixed(2)}</p>
                     <p>Rs. 0.00</p>
                     <p>Rs. 0.00</p>
-                    <p>{Number(order?.discountValue) === 0 ? "Free" : `Rs. -${Number(order?.discountValue)}`}</p>
+                    <p>{`Rs. -${Number(order?.discountValue)}`}</p>
                     <b className='text-green-800'>Rs. {order?.totalPrice?.toFixed(2)}</b>
                 </div>
             </div>

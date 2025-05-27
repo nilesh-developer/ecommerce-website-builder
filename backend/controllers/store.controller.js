@@ -5,6 +5,11 @@ import { stores } from "../models/store.model.js";
 import nodeMailer from "nodemailer"
 import { users } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { payouts } from "../models/payout.model.js";
+import { orders } from "../models/order.model.js";
+import mongoose from "mongoose";
+
+const { ObjectId } = mongoose.Types;
 
 const createStore = asyncHandler(async (req, res) => {
     const { name, storename, owner, subdomain } = req.body;
@@ -58,11 +63,11 @@ const businessdetails = asyncHandler(async (req, res) => {
         phoneNo: mobileNo
     })
 
-    if(!store){
+    if (!store) {
         return res.status(400)
-        .json(
-            new ApiResponse(400, "", "Something went wrong while adding business details")
-        )
+            .json(
+                new ApiResponse(400, "", "Something went wrong while adding business details")
+            )
     }
 
     return res.status(200)
@@ -462,7 +467,7 @@ const uploadStoreImage = asyncHandler(async (req, res) => {
 const getCustomerData = asyncHandler(async (req, res) => {
     const { storeId } = req.params;
 
-    const storeExist = await stores.findById(storeId).select("-razorpay -razorpayKeyId -razorpayKeySecret").populate("customers")
+    const storeExist = await stores.findById(storeId).populate("customers")
 
     if (!storeExist) {
         return res.status(400)
@@ -477,6 +482,116 @@ const getCustomerData = asyncHandler(async (req, res) => {
         )
 
 })
+
+const setStorePaymentDetails = asyncHandler(async (req, res) => {
+    const { storeId, type, bankName, ifsc, accountNo, accountHolderName, upiId } = req.body;
+
+    let set;
+    if (type === "bankTransfer") {
+        set = await stores.findByIdAndUpdate(storeId, {
+            paymentDetails: {
+                type,
+                bankName,
+                ifsc,
+                accountNo,
+                accountHolderName,
+            }
+        })
+    } else {
+        set = await stores.findByIdAndUpdate(storeId, {
+            paymentDetails: {
+                type,
+                upiId
+            }
+        })
+    }
+
+    if (!set) {
+        return res.status(400).json({
+            statusCode: 400,
+            message: "Something went wrong"
+        })
+    }
+
+    return res.status(200).json({
+        statusCode: 200,
+        message: "Payment details saved!"
+    })
+})
+
+const getStorePayout = asyncHandler(async (req, res) => {
+    const { storeId } = req.params;
+
+    const payoutData = await payouts.find({ store: storeId })
+
+    if (!payoutData) {
+        return res.status(400).json({
+            statusCode: 400,
+            message: 'Something went wrong'
+        })
+    }
+
+    return res.status(200).json({
+        statusCode: 200,
+        data: payoutData.reverse(),
+        message: "All payouts fetched"
+    })
+
+})
+
+// Function to get current week's Sunday to Saturday range
+const calculateCurrentWeekPayout = async (storeId) => {
+    const now = new Date();
+    const day = now.getDay(); // Sunday = 0, Monday = 1, ..., Saturday = 6
+
+    // Get Sunday
+    const sunday = new Date(now);
+    sunday.setDate(now.getDate() - day);
+    sunday.setHours(0, 0, 0, 0);
+
+    // Get Saturday
+    const saturday = new Date(sunday);
+    saturday.setDate(sunday.getDate() + 6);
+    saturday.setHours(23, 59, 59, 999);
+
+    try {
+        const weeklyPayout = await orders.aggregate([
+            {
+                $match: {
+                    store: new ObjectId(storeId), // Match the store
+                    status: "delivered",
+                    paymentMethod: "cashfree",
+                    paymentProcess: "completed",
+                    createdAt: { $gte: sunday, $lte: saturday } // Match orders within this week
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalCurrentWeekPayout: { $sum: "$payoutAmount" } // Sum the delivery charges
+                }
+            }
+        ]);
+
+        return weeklyPayout.length > 0 ? weeklyPayout[0].totalCurrentWeekPayout : 0;
+    } catch (err) {
+        console.error('Error calculating weekly earnings:', err);
+        return 0;
+    }
+}
+
+const getCurrentWeekPayout = async (req, res) => {
+    try {
+        const { storeId } = req.params;
+
+        const currentWeekPayout = await calculateCurrentWeekPayout(storeId);
+
+        return res.status(200).json({ currentWeekPayout });
+
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 export {
     createStore,
@@ -496,5 +611,8 @@ export {
     changeUpiStatus,
     deleteUpiId,
     uploadStoreImage,
-    getCustomerData
+    getCustomerData,
+    setStorePaymentDetails,
+    getStorePayout,
+    getCurrentWeekPayout
 }

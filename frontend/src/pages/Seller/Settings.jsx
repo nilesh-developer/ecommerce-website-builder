@@ -90,7 +90,7 @@ function Settings() {
             </div>
             <h2 className='text-center text-xl tracking-tight font-semibold'>Make change in payment method</h2>
             <div className='flex flex-wrap justify-center mt-5'>
-              <Link to="../payments">
+              <Link to="../add-payment-details">
                 <button className="bg-orange-600 text-sm font-semibold px-4 py-3 rounded-lg text-gray-50">UPDATE PAYMENT</button>
               </Link>
             </div>

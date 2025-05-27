@@ -108,7 +108,7 @@ function Subscriptions() {
                                 <div className='flex justify-center items-center'>
                                     <img className='h-40 w-40' src="/category.png" alt="" />
                                 </div>
-                                <h1 className='text-center text-2xl font-semibold tracking-tighter text-gray-700'>Not added categories yet!</h1>
+                                <h1 className='text-center text-2xl font-semibold tracking-tighter text-gray-700'>No Subscription found</h1>
                             </div>
                             :
                             <div className="lg:overflow-auto overflow-scroll mt-7">

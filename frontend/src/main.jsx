@@ -31,6 +31,7 @@ import AdminLayout from './pages/Seller/SellerLayout.jsx'
 import {
   AddCategory,
   AddCoupon,
+  AddPaymentDetails,
   AddProduct,
   Analytics,
   Category,
@@ -45,6 +46,7 @@ import {
   EditCategory,
   Orders,
   Payment,
+  Payout,
   Products,
   SellerOrderPage,
   Settings,
@@ -116,6 +118,8 @@ const router = createBrowserRouter(
         <Route path='edit-product/:id' element={<EditProduct />} />
         <Route path='add-coupon' element={<AddCoupon />} />
         <Route path='edit-coupon/:id' element={<EditCoupon />} />
+        <Route path='add-payment-details' element={<AddPaymentDetails />} />
+        <Route path='payouts' element={<Payout />} />
         <Route path='orders/:id' element={<SellerOrderPage />} />
       </Route>
       <Route path='*' element={<Error />} />

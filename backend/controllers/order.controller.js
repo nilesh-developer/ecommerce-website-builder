@@ -6,6 +6,8 @@ import { customers } from "../models/customer.model.js";
 import nodeMailer from "nodemailer";
 import crypto from "crypto";
 import { Cashfree } from "cashfree-pg";
+import { format } from "date-fns";
+import { payouts } from "../models/payout.model.js";
 
 const options = {
     timeZone: 'Asia/Kolkata',
@@ -52,36 +54,31 @@ const initiatePayment = asyncHandler(async (req, res) => {
     }
 
     const createOrderDB = async () => {
-        const orderPromises = orderData?.cart.map(async (product) => {
-            const ordered = await orders.create({
-                store: orderData?.storeId,
-                customerId: orderData?.custId,
-                email: orderData?.email,
-                name: orderData?.name,
-                phoneNo: orderData?.phoneNo,
-                address1: String(orderData?.address1),
-                address2: String(orderData?.address2),
-                state: orderData?.state,
-                country: orderData?.country,
-                pinCode: orderData?.pinCode,
-                paymentMethod: orderData?.paymentMethod,
-                totalPrice: orderData?.totalPrice,
-                isCouponApplied: orderData?.isCouponApplied,
-                discountValue: orderData?.discountValue,
-                coupon: orderData?.coupon,
-                product: { ...product, soldPrice: (product.salePrice - (orderData?.discountValue / orderData?.cart.length)) },
-                status: "pending",
-                paymentOrderId,
-                paymentProcess: "initiated"
-            });
-
-            store.orders.push(ordered._id);
-            customer.orders.push(ordered._id);
-
-            return ordered;
+        const ordered = await orders.create({
+            store: orderData?.storeId,
+            customerId: orderData?.custId,
+            email: orderData?.email,
+            name: orderData?.name,
+            phoneNo: orderData?.phoneNo,
+            address1: String(orderData?.address1),
+            address2: String(orderData?.address2),
+            state: orderData?.state,
+            country: orderData?.country,
+            pinCode: orderData?.pinCode,
+            paymentMethod: orderData?.paymentMethod,
+            totalPrice: orderData?.totalPrice,
+            isCouponApplied: orderData?.isCouponApplied,
+            discountValue: orderData?.discountValue,
+            coupon: orderData?.coupon,
+            product: orderData?.cart,
+            payoutAmount: Number(Number(orderData?.totalPrice) - (Number(orderData?.totalPrice) * 5 / 100)),
+            status: "pending",
+            paymentOrderId,
+            paymentProcess: "initiated"
         });
 
-        await Promise.all(orderPromises);
+        store.orders.push(ordered._id);
+        customer.orders.push(ordered._id);
 
         if (orderData?.isCouponApplied === true) {
             customer.couponsUsed.push(orderData?.coupon?.toUpperCase())
@@ -831,48 +828,47 @@ const orderPlaced = asyncHandler(async (req, res) => {
         return res.status(404).json(new ApiResponse(404, "", "Customer not found"));
     }
 
-    const orderPromises = cart.map(async (product) => {
-        const ordered = await orders.create({
-            store: storeId,
-            customerId: custId,
-            email,
-            name,
-            phoneNo,
-            address1: String(address1),
-            address2: String(address2),
-            state,
-            country,
-            pinCode,
-            paymentMethod,
-            totalPrice,
-            isCouponApplied,
-            discountValue,
-            coupon,
-            product: { ...product, soldPrice: (product.salePrice - (discountValue / cart.length)) },
-            status: "pending"
-        });
+    const ordered = await orders.create({
+        store: storeId,
+        customerId: custId,
+        email,
+        name,
+        phoneNo,
+        address1: String(address1),
+        address2: String(address2),
+        state,
+        country,
+        pinCode,
+        paymentMethod,
+        totalPrice,
+        isCouponApplied,
+        discountValue,
+        coupon,
+        product: cart,
+        status: "pending"
+    });
 
-        store.orders.push(ordered._id);
-        customer.orders.push(ordered._id);
+    store.orders.push(ordered._id);
+    customer.orders.push(ordered._id);
 
-        const date = new Date(ordered.createdAt);
+    const date = new Date(ordered.createdAt);
 
-        const emailProvider = nodeMailer.createTransport({
-            service: "gmail",
-            secure: true,
-            port: 465,
-            auth: {
-                user: process.env.OTP_EMAIL_ID,
-                pass: process.env.OTP_EMAIL_PASS
-            },
-            tls: { rejectUnauthorized: false }
-        })
+    const emailProvider = nodeMailer.createTransport({
+        service: "gmail",
+        secure: true,
+        port: 465,
+        auth: {
+            user: process.env.OTP_EMAIL_ID,
+            pass: process.env.OTP_EMAIL_PASS
+        },
+        tls: { rejectUnauthorized: false }
+    })
 
-        const receiver = {
-            from: `${store.name} <${process.env.OTP_EMAIL_ID}>`,
-            to: customer.email,
-            subject: `Your Order for ${ordered.product.name} has been successfully placed`,
-            html: `<!DOCTYPE html>
+    const receiver = {
+        from: `${store.name} <${process.env.OTP_EMAIL_ID}>`,
+        to: customer.email,
+        subject: `Your Order for ${ordered.product[0].name} has been successfully placed`,
+        html: `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -979,11 +975,14 @@ const orderPlaced = asyncHandler(async (req, res) => {
                     <th>Quantity</th>
                     <th>Price</th>
                 </tr>
-                <tr>
-                    <td>${ordered.product.name}</td>
-                    <td>${ordered.product.quantity}</td>
-                    <td>&#8377;${ordered.product.soldPrice}</td>
-                </tr>
+                ${ordered.product.map(async (product) => (
+            `<tr>
+                    <td>{product.name}</td>
+                    <td>{product.quantity}</td>
+                    <td>&#8377;{product.salePrice}</td>
+                </tr>`
+        ))
+            }
             </table>
         </div>
 
@@ -1004,21 +1003,21 @@ const orderPlaced = asyncHandler(async (req, res) => {
 
     </body >
             </html >`
+    }
+
+    emailProvider.sendMail(receiver, (error, emailResponse) => {
+        if (error) {
+            console.log("Something went wrong while sending email to customer")
+        } else {
+            console.log("Email sent successfully to customer")
         }
+    })
 
-        emailProvider.sendMail(receiver, (error, emailResponse) => {
-            if (error) {
-                console.log("Something went wrong while sending email to customer")
-            } else {
-                console.log("Email sent successfully to customer")
-            }
-        })
-
-        const sellerReceiver = {
-            from: `Eazzy < ${process.env.OTP_EMAIL_ID}> `,
-            to: store.owner.email,
-            subject: `Order received from your store ${store.name} !`,
-            html: `<!DOCTYPE html>
+    const sellerReceiver = {
+        from: `Eazzy < ${process.env.OTP_EMAIL_ID}> `,
+        to: store.owner.email,
+        subject: `Order received from your store ${store.name} !`,
+        html: `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1116,11 +1115,14 @@ const orderPlaced = asyncHandler(async (req, res) => {
                     <th>Quantity</th>
                     <th>Price</th>
                 </tr>
-                <tr>
-                    <td>${ordered.product.name}</td>
-                    <td>${ordered.product.quantity}</td>
-                    <td>&#8377;${ordered.product.soldPrice}</td>
-                </tr>
+                ${ordered.product.map(async (product) => (
+            `<tr>
+                    <td>{product.name}</td>
+                    <td>{product.quantity}</td>
+                    <td>&#8377;{product.salePrice}</td>
+                </tr>`
+        ))
+            }
             </table>
         </div>
         <div class="order-summary">
@@ -1142,20 +1144,15 @@ const orderPlaced = asyncHandler(async (req, res) => {
     </div>
     </body>
             </html>`
+    }
+
+    emailProvider.sendMail(sellerReceiver, (error, emailResponse) => {
+        if (error) {
+            console.log("Something went wrong while sending email to seller")
+        } else {
+            console.log("Email sent successfully to seller")
         }
-
-        emailProvider.sendMail(sellerReceiver, (error, emailResponse) => {
-            if (error) {
-                console.log("Something went wrong while sending email to seller")
-            } else {
-                console.log("Email sent successfully to seller")
-            }
-        })
-
-        return ordered;
-    });
-
-    await Promise.all(orderPromises);
+    })
 
     if (isCouponApplied === true) {
         customer.couponsUsed.push(coupon.toUpperCase())
@@ -1571,6 +1568,8 @@ const updateStatus = asyncHandler(async (req, res) => {
 
     const updatedStatus = await orders.findOneAndUpdate({ _id: orderId }, {
         status: req.body.status
+    }, {
+        new: true
     })
 
     if (!updatedStatus) {
@@ -1585,6 +1584,50 @@ const updateStatus = asyncHandler(async (req, res) => {
     const date = new Date(orderData.createdAt);
 
     if (updatedStatus.status === "delivered") {
+
+        if (updatedStatus.paymentMethod === "cashfree" && updatedStatus.paymentProcess ===  "completed") {
+            const orderDate = new Date(orderData?.createdAt);
+            const day = orderDate.getDay(); // Sunday = 0, Monday = 1, ..., Saturday = 6
+
+            // Get Sunday
+            const sunday = new Date(orderDate);
+            sunday.setDate(orderDate.getDate() - day);
+            sunday.setHours(0, 0, 0, 0);
+
+            // Get Saturday
+            const saturday = new Date(sunday);
+            saturday.setDate(sunday.getDate() + 6);
+            saturday.setHours(23, 59, 59, 999);
+
+            const orderWeekGroup = format(sunday, 'dd MMM') + " - " + format(saturday, 'dd MMM')
+
+            const checkWeekPayoutExist = await payouts.findOne({ week: orderWeekGroup })
+
+            if (checkWeekPayoutExist) {
+                checkWeekPayoutExist.orders.push(updatedStatus._id)
+                checkWeekPayoutExist.amount = Number(checkWeekPayoutExist.amount) + Number(updatedStatus.payoutAmount)
+                await checkWeekPayoutExist.save()
+            } else {
+                const createWeekPayout = await payouts.create({
+                    store: updatedStatus.store,
+                    week: orderWeekGroup,
+                    orders: [updatedStatus._id],
+                    paymentWeekStart: sunday,
+                    paymentWeekEnd: saturday,
+                    amount: updatedStatus.payoutAmount,
+                    status: "pending"
+                })
+            }
+        }
+
+        // Send Email
+        const itemsHTML = orderData.product?.map((product) => `
+    <tr>
+        <td>${product?.name}</td>
+        <td>${product?.quantity}</td>
+        <td>&#8377;${product?.salePrice}</td>
+    </tr>
+`).join('');
         const emailProvider = nodeMailer.createTransport({
             service: "gmail",
             secure: true,
@@ -1599,7 +1642,7 @@ const updateStatus = asyncHandler(async (req, res) => {
         const receiver = {
             from: `${orderData.store.name} <${process.env.OTP_EMAIL_ID}>`,
             to: orderData.customerId.email,
-            subject: `${orderData.product.name} from your order have been delivered`,
+            subject: `${orderData.product[0].name} from your order have been delivered`,
             html: `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1707,11 +1750,7 @@ const updateStatus = asyncHandler(async (req, res) => {
                     <th>Quantity</th>
                     <th>Price</th>
                 </tr>
-                <tr>
-                    <td>${orderData.product.name}</td>
-                    <td>${orderData.product.quantity}</td>
-                    <td>&#8377;${orderData.product.soldPrice}</td>
-                </tr>
+                 ${itemsHTML}
             </table>
         </div>
 
@@ -1736,6 +1775,7 @@ const updateStatus = asyncHandler(async (req, res) => {
 
         emailProvider.sendMail(receiver, (error, emailResponse) => {
             if (error) {
+                console.log(error)
                 console.log("Something went wrong while sending email to customer")
             } else {
                 console.log("Email sent successfully to customer")

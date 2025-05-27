@@ -17,7 +17,10 @@ import {
     updateAboutPage,
     updateSocial,
     updateStoreName,
-    uploadStoreImage
+    uploadStoreImage,
+    getStorePayout,
+    getCurrentWeekPayout,
+    setStorePaymentDetails
 } from "../controllers/store.controller.js";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
@@ -29,6 +32,8 @@ router.route("/create-store").post(createStore)
 router.route("/businessdetails").post(businessdetails)
 
 router.route("/data").post(getCurrentStoreData)
+
+router.route("/set-payment-details").post(setStorePaymentDetails)
 
 router.route("/add-domain/:id").patch(addCustomDomain)
 
@@ -77,5 +82,9 @@ router.route("/upload/images").post(
     ]), uploadStoreImage)
 
 router.route("/customer-data/:storeId").get(getCustomerData)
+
+router.route("/get-payouts/:storeId").get(getStorePayout)
+
+router.route("/get-current-week-payout/:storeId").get(getCurrentWeekPayout)
 
 export { router as storeRouter }

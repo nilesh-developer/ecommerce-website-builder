@@ -37,6 +37,7 @@ function BottomNavBar() {
                     <li><Link to="customers" className='text-md'>Customers</Link></li>
                     <li><Link to="categories" className='text-md'>Category</Link></li>
                     <li><Link to="subscriptions" className='text-md'>Subscription</Link></li>
+                    <li><Link to="payouts" className='text-md'>Payouts</Link></li>
                     {/* <li><Link to="transactions" className='text-md'>Transactions</Link></li> */}
                     <li><Link to="settings" className='text-md'>Settings</Link></li>
                     <li><Link to="/logout" className='text-md'>Logout</Link></li>
