@@ -87,7 +87,7 @@ function Dashboard() {
           <div className='mt-8 gap-4 lg:flex'>
             <div className='bg-white  border-gray-200 border lg:w-full h-fit p-5 rounded-xl'>
               <h2 className='lg:text-3xl text-xl font-bold tracking-tighter'>Store</h2>
-              {user.store.logo ? <div className='flex flex-wrap justify-center mt-5'>
+              {user?.store?.logo ? <div className='flex flex-wrap justify-center mt-5'>
                 <img className='h-20' src={user?.store?.logo} alt="store logo" />
               </div> : ""
               }
