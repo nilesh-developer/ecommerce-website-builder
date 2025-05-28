@@ -1585,7 +1585,7 @@ const updateStatus = asyncHandler(async (req, res) => {
 
     if (updatedStatus.status === "delivered") {
 
-        if (updatedStatus.paymentMethod === "cashfree" ) { // && updatedStatus.paymentProcess === "completed"
+        if (updatedStatus.paymentMethod === "cashfree" && updatedStatus.paymentProcess === "completed") {
             const orderDate = new Date(orderData?.createdAt);
             const day = orderDate.getDay(); // Sunday = 0, Monday = 1, ..., Saturday = 6
 
