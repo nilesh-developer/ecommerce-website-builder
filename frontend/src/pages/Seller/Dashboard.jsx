@@ -26,6 +26,7 @@ function Dashboard() {
     }
   }, []);
 
+
   if (loading) {
     return <div className='flex h-[calc(100vh-100px)] lg:h-screen w-full justify-center items-center'><span className="loading loading-spinner loading-lg"></span></div>
   }
@@ -43,16 +44,16 @@ function Dashboard() {
               <button className="btn btn-sm btn-primary">Verify</button>
             </div>
           </div>
-          
-          { user?.transactionId?.status && user?.subcription ? <></> :
-          <div data-theme="light" role="alert" className="alert mt-3">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            <span>Your subscription payment verification is under review. It will take 1 to 4 hours to be verified.</span>
-            <Link to={"/seller/subscriptions"}>
-              <button className="bg-blue-600 text-white px-2 py-1 rounded font-semibold">View Status</button>
-            </Link>
-          </div>
-}
+
+          {user?.transactionId?.status && user?.subcription ? <></> :
+            <div data-theme="light" role="alert" className="alert mt-3">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <span>Your subscription payment verification is under review. It will take 1 to 4 hours to be verified.</span>
+              <Link to={"/seller/subscriptions"}>
+                <button className="bg-blue-600 text-white px-2 py-1 rounded font-semibold">View Status</button>
+              </Link>
+            </div>
+          }
           <div className='grid grid-cols-2 mt-4 lg:mt-7 gap-5 lg:grid-cols-4 '>
             <div className='bg-white border-gray-200 border w-auto rounded-xl p-4'>
               <div className='flex justify-between'>
@@ -64,7 +65,7 @@ function Dashboard() {
             <div className='bg-white  border-gray-200 border w-auto rounded-xl p-4'>
               <div className='flex justify-between'>
                 <h3 className='lg:text-xl text-base font-bold overflow-hidden tracking-tighter'>Total Orders</h3>
-                </div>
+              </div>
               {/* <p className='text-sm text-gray-500 tracking-tighter'>Last 30 days</p> */}
               <h2 className='overflow-hidden text-2xl mt-4 lg:text-4xl font-extrabold'>{user?.store?.orders?.length}</h2>
             </div>

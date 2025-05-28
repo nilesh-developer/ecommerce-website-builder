@@ -64,6 +64,7 @@ import PaymentMethod from './pages/Seller/PaymentMethod.jsx'
 import ControlRoute from './helper/ControlRoute.jsx'
 import BusinessDetails from './components/Home/BusinessDetails.jsx'
 import PremiumRoute from './PrivateRoute/PremiumRoute.jsx'
+import CheckStoreCreated from './PrivateRoute/CheckStoreCreated.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -87,11 +88,13 @@ const router = createBrowserRouter(
         <Route path='logout' element={<Logout />} />
       </Route>
       <Route path='seller' element={
-        <PrivateRoute>
-          <PremiumRoute>
-            <AdminLayout />
-          </PremiumRoute>
-        </PrivateRoute>
+        <CheckStoreCreated>
+          <PrivateRoute>
+            <PremiumRoute>
+              <AdminLayout />
+            </PremiumRoute>
+          </PrivateRoute>
+        </CheckStoreCreated>
       } >
         <Route path='dashboard' element={<Dashboard />} />
         <Route path='products' element={<Products />} />
