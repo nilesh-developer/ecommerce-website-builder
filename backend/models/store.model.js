@@ -115,6 +115,16 @@ const StoreSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    additionalPreviousWeekPayout: {
+        orders: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "orders"
+        }],
+        amount: {
+            type: Number,
+            default: 0
+        }
+    },
     metaTitle: {
         type: String
     },
@@ -166,6 +176,6 @@ const StoreSchema = new mongoose.Schema({
     facebook: {
         type: String
     }
-}, {timestamps: true})
+}, { timestamps: true })
 
 export const stores = mongoose.model("stores", StoreSchema)

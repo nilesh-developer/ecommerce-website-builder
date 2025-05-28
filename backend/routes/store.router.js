@@ -20,7 +20,8 @@ import {
     uploadStoreImage,
     getStorePayout,
     getCurrentWeekPayout,
-    setStorePaymentDetails
+    setStorePaymentDetails,
+    getNumbersOfThirtyDays
 } from "../controllers/store.controller.js";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
@@ -32,6 +33,8 @@ router.route("/create-store").post(createStore)
 router.route("/businessdetails").post(businessdetails)
 
 router.route("/data").post(getCurrentStoreData)
+
+router.route("/get-numbers-of-thirty-days/:storeId").get(getNumbersOfThirtyDays)
 
 router.route("/set-payment-details").post(setStorePaymentDetails)
 

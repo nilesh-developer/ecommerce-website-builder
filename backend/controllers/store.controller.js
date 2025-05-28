@@ -519,6 +519,47 @@ const setStorePaymentDetails = asyncHandler(async (req, res) => {
     })
 })
 
+const getNumbersOfThirtyDays = asyncHandler(async (req, res) => {
+    const { storeId } = req.params;
+
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    try {
+        const noOfOrders = await orders.countDocuments({
+            store: storeId,
+            createdAt: { $gte: thirtyDaysAgo }
+        });
+
+        const totalRevenue = await orders.aggregate([
+            {
+                $match: {
+                    store: new ObjectId(storeId),
+                    status: "delivered",
+                    createdAt: { $gte: thirtyDaysAgo }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    lastThirtyDays: { $sum: "$totalPrice" }
+                }
+            }
+        ]);
+
+        return res.status(200).json({
+            statusCode: 200,
+            data: {
+                noOfOrders,
+                totalRevenueOfLastThirtyDays: totalRevenue[0].lastThirtyDays
+            },
+            message: "Data Fetched"
+        })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 const getStorePayout = asyncHandler(async (req, res) => {
     const { storeId } = req.params;
 
@@ -612,6 +653,7 @@ export {
     deleteUpiId,
     uploadStoreImage,
     getCustomerData,
+    getNumbersOfThirtyDays,
     setStorePaymentDetails,
     getStorePayout,
     getCurrentWeekPayout

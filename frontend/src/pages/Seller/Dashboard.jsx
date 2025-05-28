@@ -9,6 +9,8 @@ function Dashboard() {
 
   const { user, loading } = useStoreData();
   const { setToken } = useAuth();
+  const [noOfOrders, setNoOfOrders] = useState(0);
+  const [revenueOfLastThirtyDays, setRevenueOfLastThirtyDays] = useState(0)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,6 +27,32 @@ function Dashboard() {
       navigate('/login');
     }
   }, []);
+
+  const getNumbersOfThirtyDays = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/store/get-numbers-of-thirty-days/${user?.store?._id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      if (response.ok) {
+        const data = await response.json();
+        setNoOfOrders(data.data.noOfOrders)
+        setRevenueOfLastThirtyDays(data.data.totalRevenueOfLastThirtyDays)
+      } else {
+        toast.error("Something went wrong")
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (user?.store?._id) {
+      getNumbersOfThirtyDays()
+    }
+  }, [user])
 
 
   if (loading) {
@@ -59,15 +87,15 @@ function Dashboard() {
               <div className='flex justify-between'>
                 <h3 className='lg:text-xl text-base font-bold overflow-hidden tracking-tighter'>Total Revenue</h3>
               </div>
-              {/* <p className='text-sm text-gray-500 tracking-tighter'>Last 30 days</p> */}
-              <h2 className='overflow-hidden text-2xl mt-4 lg:text-4xl font-extrabold'>&#8377;{user?.store?.revenue}</h2>
+              <p className='text-sm text-gray-500 tracking-tighter'>Last 30 days</p>
+              <h2 className='overflow-hidden text-2xl mt-4 lg:text-4xl font-extrabold'>&#8377;{revenueOfLastThirtyDays}</h2>
             </div>
             <div className='bg-white  border-gray-200 border w-auto rounded-xl p-4'>
               <div className='flex justify-between'>
                 <h3 className='lg:text-xl text-base font-bold overflow-hidden tracking-tighter'>Total Orders</h3>
               </div>
-              {/* <p className='text-sm text-gray-500 tracking-tighter'>Last 30 days</p> */}
-              <h2 className='overflow-hidden text-2xl mt-4 lg:text-4xl font-extrabold'>{user?.store?.orders?.length}</h2>
+              <p className='text-sm text-gray-500 tracking-tighter'>Last 30 days</p>
+              <h2 className='overflow-hidden text-2xl mt-4 lg:text-4xl font-extrabold'>{noOfOrders}</h2>
             </div>
             <div className='bg-white  border-gray-200 border w-auto rounded-xl p-4'>
               <div className='flex justify-between'>

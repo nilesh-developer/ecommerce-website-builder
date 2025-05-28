@@ -63,15 +63,15 @@ function Payout() {
                 <div className='p-3 mt-5 rounded-2xl bg-blue-950 text-white'>
                     <p>All payouts will be automatically settled to your bank account <span className='font-bold'>every week on Monday.</span></p>
                 </div>
-                <h3 className='mt-5 font-extrabold text-xl'>Current Week Details</h3>
+                {/* <h3 className='mt-5 font-extrabold text-xl'>Current Week Details</h3> */}
                 <div className='flex justify-between gap-3 mt-3'>
                     <div className='p-3 rounded-2xl w-full bg-yellow-400'>
-                        <h3 className='font-semibold text-sm lg:text-base'>Pending Payout</h3>
+                        <h3 className='font-semibold text-sm lg:text-base'>Current Week Pending Payout</h3>
                         <p className='font-bold text-xl lg:text-3xl mt-2'>&#8377; {currentWeekPendingPayout}</p>
                     </div>
                     <div className='p-3 rounded-2xl w-full bg-green-400'>
-                        <h3 className='font-semibold text-sm lg:text-base'>Payment Received</h3>
-                        <p className='font-bold text-xl lg:text-3xl mt-2'>&#8377; 0</p>
+                        <h3 className='font-semibold text-sm lg:text-base'>Remaining Payout of Previous Paid Week</h3>
+                        <p className='font-bold text-xl lg:text-3xl mt-2'>&#8377; {user?.store?.additionalPreviousWeekPayout?.amount}</p>
                     </div>
                 </div>
                 {transactions?.length !== 0 ?
@@ -89,9 +89,10 @@ function Payout() {
                                 <thead className="bg-gray-100">
                                     <tr className="text-left">
                                         <th className="p-3 text-base tracking-tighter min-w-36">Payout Week</th>
-                                        <th className="p-3 text-base tracking-tighter">Payment Method</th>
+                                        {/* <th className="p-3 text-base tracking-tighter">Payment Method</th>
                                         <th className="p-3 text-base tracking-tighter">Transaction No.</th>
-                                        <th className="p-3 text-base tracking-tighter min-w-36">Date</th>
+                                        <th className="p-3 text-base tracking-tighter min-w-36">Date</th> */}
+                                        <th className="p-3 text-base tracking-tighter">No. of orders</th>
                                         <th className="p-3 text-base tracking-tighter">Amount</th>
                                         <th className="p-3 text-base tracking-tighter">Status</th>
                                     </tr>
@@ -106,7 +107,7 @@ function Payout() {
                                             <td className="p-3 text-base tracking-tight">
                                                 <p>{dateFormat(transaction?.paymentWeekStart, "dd mmm") + " - " + dateFormat(transaction?.paymentWeekEnd, "dd mmm")}</p>
                                             </td>
-                                            <td className="p-3 text-base tracking-tight">
+                                            {/* <td className="p-3 text-base tracking-tight">
                                                 <p>{transaction?.paymentMethod ? transaction?.paymentMethod?.toUpperCase() : "----"}</p>
                                             </td>
                                             <td className="p-3 text-base tracking-tight">
@@ -114,6 +115,9 @@ function Payout() {
                                             </td>
                                             <td className="p-3 text-base tracking-tight">
                                                 <p>{dateFormat(transaction?.updatedAt, "mediumDate")}</p>
+                                            </td> */}
+                                            <td className="p-3 text-base tracking-tight">
+                                                <p>{transaction?.orders?.length}</p>
                                             </td>
                                             <td className="p-3 text-base tracking-tight">
                                                 <p>Rs. {transaction?.amount}</p>
