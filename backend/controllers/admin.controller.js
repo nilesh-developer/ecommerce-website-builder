@@ -99,6 +99,45 @@ const allPayouts = asyncHandler(async (req, res) => {
         })
 })
 
+const getStoreData = asyncHandler(async (req, res) => {
+
+    const {id} = req.params
+    const store = await stores.findById(id)
+
+    return res.status(200)
+        .json({
+            statusCode: 200,
+            data: store,
+            message: "Data fetched"
+        })
+})
+
+const getCustomerData = asyncHandler(async (req, res) => {
+
+    const {id} = req.params
+    const customer = await customers.findById(id).populate("store")
+
+    return res.status(200)
+        .json({
+            statusCode: 200,
+            data: customer,
+            message: "Data fetched"
+        })
+})
+
+const getPayoutDetails = asyncHandler(async (req, res) => {
+
+    const {id} = req.params
+    const payout = await payouts.findById(id).populate("store")
+
+    return res.status(200)
+        .json({
+            statusCode: 200,
+            data: payout,
+            message: "Data fetched"
+        })
+})
+
 const noOfAllData = asyncHandler(async (req, res) => {
     const order = await orders.countDocuments();
     const store = await stores.countDocuments();
@@ -126,4 +165,7 @@ export {
     allStores,
     allCustomers,
     allPayouts,
+    getStoreData,
+    getCustomerData,
+    getPayoutDetails
 }

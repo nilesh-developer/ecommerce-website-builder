@@ -3,6 +3,7 @@ import { Ordermobile } from '../../components/Seller';
 import { Link } from 'react-router-dom';
 import dateFormat from "dateformat";
 import { useAdminAuth } from '../../store/adminAuth';
+import OrderMobileView from '../../components/admin/OrderMobileView';
 
 function AllOrders() {
     const { adminToken } = useAdminAuth();
@@ -55,7 +56,7 @@ function AllOrders() {
                 <>
                     {/* Mobile View of Orders */}
                     < div className='mx-5 flex flex-row lg:hidden'>
-                        <Ordermobile orders={orders} />
+                        <OrderMobileView orders={orders} />
                     </div>
 
                     {/* Desktop View of Orders */}

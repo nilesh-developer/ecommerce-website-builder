@@ -79,7 +79,7 @@ function AllSellers() {
                                     {sellers.map((seller, idx) => (
                                         <tr key={idx} className="border-b border-opacity-20 border-gray-300 bg-white">
                                             <td className="p-3 text-base tracking-tight">
-                                                <Link to={"/admin/stores/" + seller?._id} className='underline font-semibold'>{seller?._id}</Link>
+                                                <Link to={"/admin/store/" + seller?._id} className='underline font-semibold'>{seller?._id}</Link>
                                             </td>
                                             {/* <td className="p-3 text-base tracking-tight">
                                                 <p className=''>{seller?.owner?.email}</p>

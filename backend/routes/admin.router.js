@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
-import { addVisit, allCustomers, allOrders, allPayouts, allStores, loginAdmin, noOfAllData } from "../controllers/admin.controller.js";
+import { addVisit, allCustomers, allOrders, allPayouts, allStores, getCustomerData, getPayoutDetails, getStoreData, loginAdmin, noOfAllData } from "../controllers/admin.controller.js";
 
 const router = Router()
 
@@ -17,5 +17,11 @@ router.route("/get-all-stores").get(verifyJwt,allStores)
 router.route("/get-all-customers").get(verifyJwt,allCustomers)
 
 router.route("/get-all-payouts").get(verifyJwt,allPayouts)
+
+router.route("/get-store-data/:id").get(verifyJwt,getStoreData)
+
+router.route("/get-customer-data/:id").get(verifyJwt,getCustomerData)
+
+router.route("/get-payout-details/:id").get(verifyJwt,getPayoutDetails)
 
 export {router as adminRouter}
