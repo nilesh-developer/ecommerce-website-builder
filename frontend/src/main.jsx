@@ -27,7 +27,7 @@ import {
 } from "./components/Home/index.js"
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './store/auth.jsx'
-import AdminLayout from './pages/Seller/SellerLayout.jsx'
+import SellerLayout from './pages/Seller/SellerLayout.jsx'
 import {
   AddCategory,
   AddCoupon,
@@ -65,6 +65,16 @@ import ControlRoute from './helper/ControlRoute.jsx'
 import BusinessDetails from './components/Home/BusinessDetails.jsx'
 import PremiumRoute from './PrivateRoute/PremiumRoute.jsx'
 import CheckStoreCreated from './PrivateRoute/CheckStoreCreated.jsx'
+import AdminDashboard from './pages/admin/AdminDashboard.jsx'
+import { AuthAdminProvider } from './store/adminAuth.jsx'
+import AdminLogin from './pages/admin/AdminLogin.jsx'
+import AdminLayout from './pages/admin/AdminLayout.jsx'
+import AllOrders from './pages/admin/AllOrders.jsx'
+import AllSellers from './pages/admin/AllSellers.jsx'
+import AllCustomers from './pages/admin/AllCustomers.jsx'
+import AllPayouts from './pages/admin/AllPayouts.jsx'
+import AdminOrderPage from './pages/admin/AdminOrderPage.jsx'
+import AdminLogout from './pages/admin/AdminLogout.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -91,7 +101,7 @@ const router = createBrowserRouter(
         <CheckStoreCreated>
           <PrivateRoute>
             <PremiumRoute>
-              <AdminLayout />
+              <SellerLayout />
             </PremiumRoute>
           </PrivateRoute>
         </CheckStoreCreated>
@@ -125,6 +135,16 @@ const router = createBrowserRouter(
         <Route path='payouts' element={<Payout />} />
         <Route path='orders/:id' element={<SellerOrderPage />} />
       </Route>
+      <Route path='admin' element={<AdminLayout />}>
+        <Route path='dashboard' element={<AdminDashboard />} />
+        <Route path='orders' element={<AllOrders />} />
+        <Route path='sellers' element={<AllSellers />} />
+        <Route path='customers' element={<AllCustomers />} />
+        <Route path='payouts' element={<AllPayouts />} />
+        <Route path='orders/:id' element={<AdminOrderPage />} />
+         <Route path='logout' element={<AdminLogout />} />
+      </Route>
+      <Route path='admin-login' element={<AdminLogin />} />
       <Route path='*' element={<Error />} />
     </>
   )
@@ -132,12 +152,14 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthProvider>
-    <React.StrictMode>
-      <RouterProvider router={router} />
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-      />
-    </React.StrictMode>
+    <AuthAdminProvider>
+      <React.StrictMode>
+        <RouterProvider router={router} />
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+        />
+      </React.StrictMode>
+    </AuthAdminProvider>
   </AuthProvider>
 )
