@@ -78,6 +78,7 @@ import AdminLogout from './pages/admin/AdminLogout.jsx'
 import StorePage from './pages/admin/StorePage.jsx'
 import CustomerPage from './pages/admin/CustomerPage.jsx'
 import PayoutPage from './pages/admin/PayoutPage.jsx'
+import AdminChangePassword from './pages/admin/AdminChangePassword.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -148,6 +149,7 @@ const router = createBrowserRouter(
         <Route path='store/:id' element={<StorePage />} />
         <Route path='customers/:id' element={<CustomerPage />} />
         <Route path='payouts/:id' element={<PayoutPage />} />
+        <Route path='change-password' element={<AdminChangePassword />} />
         <Route path='logout' element={<AdminLogout />} />
       </Route>
       <Route path='admin-login' element={<AdminLogin />} />

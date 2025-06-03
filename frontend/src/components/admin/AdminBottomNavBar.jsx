@@ -28,6 +28,7 @@ function AdminBottomNavBar() {
                 <ul tabIndex={0} className="dropdown-content z-[1] menu px-2 shadow bg-base-100 rounded-box w-52">
                     {/* <li><Link to="subscriptions" className='text-md'>Subscription</Link></li> */}
                     <li><Link to="payouts" className='text-md'>Payouts</Link></li>
+                    <li><Link to="change-password" className='text-md'>Change Password</Link></li>
                     {/* <li><Link to="settings" className='text-md'>Settings</Link></li> */}
                     <li><Link to="/admin/logout" className='text-md'>Logout</Link></li>
                 </ul>

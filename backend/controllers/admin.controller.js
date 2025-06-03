@@ -157,6 +157,26 @@ const noOfAllData = asyncHandler(async (req, res) => {
         })
 })
 
+const changeAdminPassword = asyncHandler(async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+
+    const admin = await admins.findOne({email: "mail.eazzystore@gmail.com"})
+    const result = await admin.isPasswordCorrect(oldPassword)
+
+    if (!result) {
+        return res.status(400).json(
+            new ApiResponse(400, "", "Old Password is incorrect")
+        )
+    }
+
+    const updatedPassword = await admins.findOneAndUpdate({ _id: req.user._id }, { password: newPassword })
+
+    return res.status(200)
+        .json(
+            new ApiResponse(200, { admin: updatedPassword }, "Password changed successfully")
+        )
+})
+
 export {
     loginAdmin,
     addVisit,
@@ -167,5 +187,6 @@ export {
     allPayouts,
     getStoreData,
     getCustomerData,
-    getPayoutDetails
+    getPayoutDetails,
+    changeAdminPassword
 }
