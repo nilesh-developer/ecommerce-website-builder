@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import { useCustomerAuth } from '../store/customerAuth'
 import { Helmet } from 'react-helmet'
+import {Box, LogOut, Pen, User} from "lucide-react"
 
 function Account() {
     const { customerData, loading } = useCustomerAuth()
@@ -42,16 +43,24 @@ function Account() {
             <h4 className="text-base lg:text-2xl font-semibold truncate">Hello {customerData.name},</h4>
             <div className="lg:flex flex-wrap mt-6">
                 <div className="lg:w-1/4 w-full lg:h-full ">
-                    <div className="lg:grid grid-rows-4 h-[26rem] hidden">
-                        <Link className="text-xl border-t-2 border-t-black border-x-2 border-x-black flex flex-wrap justify-center items-center"
-                            to="/account">Profile</Link>
-                        <Link className="text-xl border-t-2 border-t-black border-x-2 border-x-black flex flex-wrap justify-center items-center"
-                            to="/orders">Orders</Link>
-                        <Link className="text-xl border-t-2 border-t-black border-x-2 border-x-black flex flex-wrap justify-center items-center"
-                            to="./update-password">Change Password</Link>
-                        <Link className="text-xl border-y-2 border-y-black border-x-2 border-x-black flex flex-wrap justify-center items-center"
-                            to="/logout">Logout</Link>
-                    </div>
+                    <div className="lg:grid grid-rows-4 h-[26rem] hidden lg:gap-4 w-[40rem]">
+                            <div className='text-md w-1/2 font-semibold p-4 rounded-md bg-slate-200 flex flex-wrap justify-center items-center'>
+                                <User className="w-6 h-6 text-black" />
+                                <Link to={"/account"} className='text-xl ml-3'>Profile</Link>
+                            </div>
+                            <div className='text-md w-1/2 font-semibold p-4 rounded-md bg-slate-200 flex flex-wrap justify-center items-center'>
+                                <Box className="w-6 h-6 text-black" />
+                                <Link to={"/orders"} className='text-xl ml-3'>Orders</Link>
+                            </div>
+                            <div className='text-md w-1/2 font-semibold p-4 rounded-md bg-slate-200 flex flex-wrap justify-center items-center'>
+                                <Pen className="w-5 h-5 text-black" />
+                                <Link to={"./update-password"} className='text-xl ml-3'>Manage Password</Link>
+                            </div>
+                            <div className='text-md w-1/2 font-semibold p-4 rounded-md bg-slate-200 flex flex-wrap justify-center items-center'>
+                                <LogOut className="w-6 h-6 text-black" />
+                                <Link to={"/logout"} className='text-xl ml-3'>Logout</Link>
+                            </div>
+                        </div>
                     <div className='w-full lg:hidden'>
                         <div className='flex gap-2'>
                             <Link className="text-xs w-1/2 font-semibold p-4 rounded-md bg-slate-200 flex flex-wrap justify-center items-center"

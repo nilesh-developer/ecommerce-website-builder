@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useCart } from '../store/CartContext';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { ShoppingBag } from 'lucide-react';
 
 function Cart() {
     const { cart, removeFromCart, updateQuantity, calculateTotal } = useCart();
@@ -159,12 +160,12 @@ function Cart() {
                         </div>
                     </div>
                     :
-                    <div className='flex justify-center items-center h-[30rem] lg:h-auto mt-12 lg:mt-10'>
+                    <div className='flex justify-center items-center h-[20rem] lg:h-auto lg:mt-10'>
                         <div className=''>
-                            <img className='h-32 ml-5 lg:ml-0 lg:h-52' src="./shopping-cart.png" alt="" />
+                            <img className='h-32 ml-5 lg:ml-0 lg:h-52 hidden lg:block' src="./shopping-cart.png" alt="Cart Image" />
                             <p className='text-center text-2xl font-semibold'>Your cart is empty</p>
                             <Link to="/">
-                                <button data-theme="light" style={{ backgroundColor: color1, color: color2 }} type='button' className='btn mt-10 w-full'>
+                                <button data-theme="light" style={{ backgroundColor: color1, color: color2 }} type='button' className='btn mt-5 w-full'>
                                     Continue Shopping
                                 </button>
                             </Link>
