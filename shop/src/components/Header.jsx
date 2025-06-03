@@ -17,7 +17,7 @@ function Header({ store, color1, color2, openSearch, setOpenSearch }) {
   };
 
   return (
-    <header className='h-[70px] top-0 sticky bg-white z-50 border-b border-gray-100'>
+    <header className='h-[64px] lg:h-[70px] top-0 sticky bg-white z-50 border-b border-gray-100'>
       <div className='lg:mx-28 mx-3 md:mx-5 flex flex-wrap justify-between items-center h-full'>
         <Link to="/">
           {store?.logo ?
