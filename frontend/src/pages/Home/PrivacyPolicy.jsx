@@ -8,7 +8,7 @@ const PrivacyPolicy = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-9">
+    <div className="container mx-auto px-4 py-9 mt-14">
       <header className="text-center mb-5">
         <h1 className="text-3xl font-bold text-black">Privacy Policy</h1>
       </header>

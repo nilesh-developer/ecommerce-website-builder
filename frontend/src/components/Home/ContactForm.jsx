@@ -51,7 +51,7 @@ const ContactForm = () => {
     };
 
     return (
-        <div className="max-w-lg mx-auto p-6 my-8 bg-white bg-transparent rounded-lg shadow-lg">
+        <div className="max-w-lg mx-auto p-6 my-8 bg-white bg-transparent rounded-lg shadow-lg mt-20">
             <h2 className="text-2xl font-semibold text-center mb-4">Contact us</h2>
             <p className="text-center text-gray-600 mb-6">
                 Our team is happy to answer your questions. Fill out the form and we’ll

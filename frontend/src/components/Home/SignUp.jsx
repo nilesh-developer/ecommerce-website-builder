@@ -147,7 +147,7 @@ function SignUp() {
 
     return (
         <>
-            <div className='flex flex-wrap justify-center items-center h-auto py-10'>
+            <div className='flex flex-wrap justify-center items-center h-auto py-10 mt-10'>
                 <div className="w-96 mx-auto bg-white p-8 rounded-2xl shadow-none lg:shadow-md">
                     <h1 className="text-3xl text-black font-bold mb-6 flex flex-wrap justify-center">Sign Up</h1>
                     <h3 className="text-gray-700">Already registered? <Link className='font-bold text-orange-600' to="/login">Login</Link></h3>

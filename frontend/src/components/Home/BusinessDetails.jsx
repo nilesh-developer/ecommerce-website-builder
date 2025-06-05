@@ -76,7 +76,7 @@ const BusinessDetails = () => {
   };
 
   return (
-    <div className="flex lg:items-center justify-center h-screen bg-white">
+    <div className="flex lg:items-center justify-center h-screen bg-white mt-10">
       <div data-theme="light" className="bg-white px-5 py-8 mt-4 lg:mt-0 rounded-lg w-full max-w-xl">
         <h2 className="text-4xl font-bold text-black text-center mb-8">Business Details</h2>
         <form onSubmit={handleSubmit}>

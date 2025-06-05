@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Header, Footer } from '../../components/Home/index'
+import HeaderLanding from '../../components/Home/HeaderLanding'
 function Layout() {
 
   const addVisit = async () => {
@@ -17,7 +18,8 @@ function Layout() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
+      <HeaderLanding />
       <Outlet />
       <Footer />
     </>

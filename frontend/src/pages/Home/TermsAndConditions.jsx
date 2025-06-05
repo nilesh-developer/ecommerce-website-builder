@@ -8,7 +8,7 @@ const TermsAndConditions = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-9">
+    <div className="container mx-auto px-4 py-9 mt-14">
       <header className="text-center mb-5">
         <h1 className="text-3xl font-bold text-black">Terms and Conditions</h1>
       </header>
