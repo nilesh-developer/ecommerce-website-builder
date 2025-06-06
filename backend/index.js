@@ -1,6 +1,6 @@
-import { configDotenv } from "dotenv"
-import dbConnect from "./db/index.js"
-import app from "./app.js"
+import { configDotenv } from "dotenv";
+import dbConnect from "./db/index.js";
+import app from "./app.js";
 
 configDotenv({
     path: "./.env"
