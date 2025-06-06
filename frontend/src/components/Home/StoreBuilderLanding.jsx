@@ -233,7 +233,7 @@ const StoreBuilderLanding = () => {
           <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">Join thousands of creators and small businesses who are already making money with their online stores</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/signup" className="bg-gradient-to-r from-orange-500 to-orange-600 text-black px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md"><button>Create Your Store Now</button></Link>
-            <Link to="https://youtu.be/JJ-WRmY9iJc?si=PMrf930XP3E9XgYv" className="px-8 py-4 rounded-full text-lg font-semibold border border-orange-500/40 hover:border-orange-400 backdrop-blur-sm hover:bg-orange-500/5 transition-all text-black">Talk to Sales</Link>
+            <Link to="/contact-us" className="px-8 py-4 rounded-full text-lg font-semibold border border-orange-500/40 hover:border-orange-400 backdrop-blur-sm hover:bg-orange-500/5 transition-all text-black">Talk to Sales</Link>
           </div>
         </div>
       </section>
