@@ -798,6 +798,10 @@ const updateOrderPaymentStatus = asyncHandler(async (req, res) => {
         createdAt: { $lt: tenMinsAgo }
     })
 
+    if( initiatedPaymentStuckOrders.length === 0) {
+        return res.status(200).json({ message: "No stuck orders found" });
+    }
+
     for (const order of initiatedPaymentStuckOrders) {
         await orders.findByIdAndUpdate(order._id, {
             paymentProcess: "failed",
