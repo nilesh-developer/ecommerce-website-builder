@@ -804,6 +804,8 @@ const updateOrderPaymentStatus = asyncHandler(async (req, res) => {
             status: "canceled"
         })
     }
+
+    return res.status(200).json({ message: "Success" });
 })
 
 const paymentDataByPaymentOrderId = asyncHandler(async (req, res) => {
