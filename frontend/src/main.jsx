@@ -47,9 +47,9 @@ import {
   EditCategory,
   Orders,
   Payment,
-  Payout,
   Products,
   SellerOrderPage,
+  SellerPayoutPage,
   Settings,
   Store,
   StoreAboutPage,
@@ -139,7 +139,7 @@ const router = createBrowserRouter(
         <Route path='add-coupon' element={<AddCoupon />} />
         <Route path='edit-coupon/:id' element={<EditCoupon />} />
         <Route path='add-payment-details' element={<AddPaymentDetails />} />
-        <Route path='payouts' element={<Payout />} />
+        <Route path='payouts' element={<SellerPayoutPage />} />
         <Route path='orders/:id' element={<SellerOrderPage />} />
       </Route>
       <Route path='admin' element={<AdminLayout />}>

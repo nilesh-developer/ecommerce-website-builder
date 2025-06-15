@@ -130,6 +130,8 @@ const verifyPayment = asyncHandler(async (req, res) => {
             if (response[0]?.payment_status === "SUCCESS") {
                 const store = await stores.findById(dbOrderData.store)
                 store.revenue = Number(store.revenue) + Number(dbOrderData.totalPrice)
+                store.pendingPayoutOfOrderNotDelivered.orders.push(dbOrderData._id)
+                store.pendingPayoutOfOrderNotDelivered.amount = Number(store?.pendingPayoutOfOrderNotDelivered?.amount) + Number(dbOrderData.payoutAmount)
                 await store.save()
 
                 return res.status(200).json({
@@ -798,7 +800,7 @@ const updateOrderPaymentStatus = asyncHandler(async (req, res) => {
         createdAt: { $lt: tenMinsAgo }
     })
 
-    if( initiatedPaymentStuckOrders.length === 0) {
+    if (initiatedPaymentStuckOrders.length === 0) {
         return res.status(200).json({ message: "No stuck orders found" });
     }
 
@@ -1607,67 +1609,12 @@ const updateStatus = asyncHandler(async (req, res) => {
     if (updatedStatus.status === "delivered") {
 
         if (updatedStatus.paymentMethod === "cashfree" && updatedStatus.paymentProcess === "completed") {
-            const orderDate = new Date(orderData?.createdAt);
-            const day = orderDate.getDay(); // Sunday = 0, Monday = 1, ..., Saturday = 6
-
-            // Get Sunday
-            const sunday = new Date(orderDate);
-            sunday.setDate(orderDate.getDate() - day);
-            sunday.setHours(0, 0, 0, 0);
-
-            // Get Saturday
-            const saturday = new Date(sunday);
-            saturday.setDate(sunday.getDate() + 6);
-            saturday.setHours(23, 59, 59, 999);
-
-            const orderWeekGroup = format(sunday, 'dd MMM') + " - " + format(saturday, 'dd MMM')
-
-            const checkWeekPayoutExist = await payouts.findOne({ week: orderWeekGroup })
-
-            if (checkWeekPayoutExist) {
-                const now = new Date()
-                const currentDay = now.getDay()
-
-                // Get Sunday
-                const currentWeekSunday = new Date(now);
-                currentWeekSunday.setDate(now.getDate() - currentDay);
-                currentWeekSunday.setHours(0, 0, 0, 0);
-
-                // Get Saturday
-                const currentWeekSaturday = new Date(sunday);
-                currentWeekSaturday.setDate(currentWeekSunday.getDate() + 6);
-                currentWeekSaturday.setHours(23, 59, 59, 999);
-
-                const currentWeek = format(currentWeekSunday, 'dd MMM') + " - " + format(currentWeekSaturday, 'dd MMM')
-
-                if (currentWeek === orderWeekGroup) {
-                    checkWeekPayoutExist.orders.push(updatedStatus._id)
-                    checkWeekPayoutExist.amount = Number(checkWeekPayoutExist.amount) + Number(updatedStatus.payoutAmount)
-                    await checkWeekPayoutExist.save()
-                } else {
-                    if (checkWeekPayoutExist.status === "pending") {
-                        checkWeekPayoutExist.orders.push(updatedStatus._id)
-                        checkWeekPayoutExist.amount = Number(checkWeekPayoutExist.amount) + Number(updatedStatus.payoutAmount)
-                        await checkWeekPayoutExist.save()
-                    } else {
-                        const store = await stores.findById(orderData?.store?._id)
-                        store.additionalPreviousWeekPayout.orders.push(updatedStatus._id)
-                        store.additionalPreviousWeekPayout.amount = Number(store?.additionalPreviousWeekPayout?.amount) + Number(updatedStatus.payoutAmount)
-                        await store.save()
-                    }
-                }
-
-            } else {
-                const createWeekPayout = await payouts.create({
-                    store: updatedStatus.store,
-                    week: orderWeekGroup,
-                    orders: [updatedStatus._id],
-                    paymentWeekStart: sunday,
-                    paymentWeekEnd: saturday,
-                    amount: updatedStatus.payoutAmount,
-                    status: "pending"
-                })
-            }
+            const store = await stores.findById(orderData?.store?._id)
+            store.pendingPayoutOfOrderNotDelivered.orders.pull(updatedStatus._id)
+            store.pendingPayoutOfOrderNotDelivered.amount = Number(store?.pendingPayoutOfOrderNotDelivered?.amount) - Number(updatedStatus.payoutAmount)
+            store.pendingPayout.orders.push(updatedStatus._id)
+            store.pendingPayout.amount = Number(store?.pendingPayout?.amount) + Number(updatedStatus.payoutAmount)
+            await store.save()
         }
 
         // Send Email

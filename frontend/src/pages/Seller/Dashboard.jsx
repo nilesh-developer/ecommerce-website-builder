@@ -12,6 +12,7 @@ function Dashboard() {
   const [noOfOrders, setNoOfOrders] = useState(0);
   const [revenueOfLastThirtyDays, setRevenueOfLastThirtyDays] = useState(0)
   const navigate = useNavigate();
+  const [loadingData, setLoadingData] = useState(true)
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -30,6 +31,7 @@ function Dashboard() {
 
   const getNumbersOfThirtyDays = async () => {
     try {
+      setLoadingData(true)
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/store/get-numbers-of-thirty-days/${user?.store?._id}`, {
         method: "GET",
         headers: {
@@ -45,6 +47,8 @@ function Dashboard() {
       }
     } catch (error) {
       console.log(error)
+    } finally {
+      setLoadingData(false)
     }
   }
 
@@ -55,7 +59,7 @@ function Dashboard() {
   }, [user])
 
 
-  if (loading) {
+  if (loading || loadingData) {
     return <div className='flex h-[calc(100vh-100px)] lg:h-screen w-full justify-center items-center'><span className="loading loading-spinner loading-lg"></span></div>
   }
 

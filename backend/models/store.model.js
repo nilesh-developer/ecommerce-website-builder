@@ -111,11 +111,21 @@ const StoreSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    currentWeekPendingPayout: {
-        type: Number,
-        default: 0
+    payouts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "payouts"
+    }],
+    pendingPayout: {
+        orders: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "orders"
+        }],
+        amount: {
+            type: Number,
+            default: 0
+        }
     },
-    additionalPreviousWeekPayout: {
+    pendingPayoutOfOrderNotDelivered: {
         orders: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "orders"

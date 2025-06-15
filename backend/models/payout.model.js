@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const PayoutSchema = new mongoose.Schema({
-    // owner: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "admins"
-    // },
     store: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "stores"
@@ -13,19 +9,6 @@ const PayoutSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "orders"
     }],
-    week: {
-        type: String,
-        unique: true,
-        required: true
-    },
-    paymentWeekStart: {
-        type: Date,
-        required: true
-    },
-    paymentWeekEnd: {
-        type: Date,
-        required: true
-    },
     paymentMethod: {
         type: String,
     },
@@ -37,8 +20,8 @@ const PayoutSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["pending", "completed"],
-        default: "pending"
+        enum: ["requested", "accepted", "processing", "completed"],
+        default: "requested"
     }
 }, { timestamps: true })
 
