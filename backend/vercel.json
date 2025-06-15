@@ -17,7 +17,7 @@
     },
     "crons": [
         {
-            "path": "/api/order/cron/update-payment-status",
+            "path": "/api/cron/update-payment-status",
             "schedule": "*/10 * * * *"
         }
     ]

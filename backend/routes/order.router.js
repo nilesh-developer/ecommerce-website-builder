@@ -11,8 +11,6 @@ router.route("/update-cashfree-payment").post(cashfreePaymentDetails) //payment 
 
 router.route("/payment-status/:paymentOrderId").get(paymentDataByPaymentOrderId)
 
-router.route("/cron/update-payment-status").get(updateOrderPaymentStatus)
-
 router.route("/place-order").post(orderPlaced)
 
 router.route("/place-order-cod").post(codOrderPlaced)
