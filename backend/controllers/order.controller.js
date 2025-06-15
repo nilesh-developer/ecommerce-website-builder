@@ -791,6 +791,24 @@ const cashfreePaymentDetails = asyncHandler(async (req, res) => {
     return res.status(200).json({ message: 'Payment status updated for all related orders' });
 })
 
+const updateOrderPaymentStatus = asyncHandler(async (req, res) => {
+    const tenMinsAgo = new Date(Date.now() - 10 * 60 * 1000)
+    const initiatedPaymentStuckOrders = await orders.find({
+        paymentProcess: "initiated",
+        createdAt: { $lt: tenMinsAgo }
+    })
+
+    for (const order of initiatedPaymentStuckOrders) {
+        await orders.findByIdAndUpdate(order._id, {
+            paymentProcess: "failed",
+            status: "canceled"
+        })
+    }
+     return res.status(200).json({
+        message: "Success"
+     })
+})
+
 const paymentDataByPaymentOrderId = asyncHandler(async (req, res) => {
     const { paymentOrderId } = req.params;
     const dbOrderData = await orders.findOne(
@@ -1874,6 +1892,7 @@ export {
     verifyPayment,
     cashfreePaymentDetails,
     paymentDataByPaymentOrderId,
+    updateOrderPaymentStatus,
     orderPlaced,
     codOrderPlaced,
     getAllOrders,

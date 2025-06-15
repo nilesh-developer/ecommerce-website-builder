@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { acceptOrder, cancelOrder, cashfreePaymentDetails, codOrderPlaced, getAllOrders, getOrderData, initiatePayment, orderPlaced, paymentDataByPaymentOrderId, storeOrders, updateStatus, verifyPayment } from "../controllers/order.controller.js";
+import { acceptOrder, cancelOrder, cashfreePaymentDetails, codOrderPlaced, getAllOrders, getOrderData, initiatePayment, orderPlaced, paymentDataByPaymentOrderId, storeOrders, updateOrderPaymentStatus, updateStatus, verifyPayment } from "../controllers/order.controller.js";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
 const router = Router()
 
@@ -10,6 +10,8 @@ router.route("/verify-payment").post(verifyPayment)
 router.route("/update-cashfree-payment").post(cashfreePaymentDetails) //payment webhook. notify_url in cashfree
 
 router.route("/payment-status/:paymentOrderId").get(paymentDataByPaymentOrderId)
+
+router.route("/cron/update-payment-status").get(updateOrderPaymentStatus)
 
 router.route("/place-order").post(orderPlaced)
 
