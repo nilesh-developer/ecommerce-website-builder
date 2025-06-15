@@ -15,8 +15,10 @@
     "env": {
         "NODE_ENV": "production"
     },
-    "cron": {
-        "path": "/api/order/cron/update-payment-status",
-        "schedule": "*/10 * * * *"
-    }
+    "cron": [
+        {
+            "path": "/api/order/cron/update-payment-status",
+            "schedule": "*/10 * * * *"
+        }
+    ]
 }
