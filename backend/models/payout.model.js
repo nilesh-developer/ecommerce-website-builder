@@ -15,6 +15,9 @@ const PayoutSchema = new mongoose.Schema({
     paymentTransactionNo: {
         type: String
     },
+    notes: {
+        type: String
+    },
     amount: {
         type: Number
     },

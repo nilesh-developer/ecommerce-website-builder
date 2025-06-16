@@ -51,6 +51,7 @@ import {
   SellerOrderPage,
   SellerPayoutPage,
   Settings,
+  SinglePayoutPage,
   Store,
   StoreAboutPage,
   Subscriptions,
@@ -81,6 +82,7 @@ import CustomerPage from './pages/admin/CustomerPage.jsx'
 import PayoutPage from './pages/admin/PayoutPage.jsx'
 import AdminChangePassword from './pages/admin/AdminChangePassword.jsx'
 import StoreBuilderLanding from './components/Home/StoreBuilderLanding.jsx'
+import AdminPayoutPage from './pages/admin/AdminPayoutPage.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -140,6 +142,7 @@ const router = createBrowserRouter(
         <Route path='edit-coupon/:id' element={<EditCoupon />} />
         <Route path='add-payment-details' element={<AddPaymentDetails />} />
         <Route path='payouts' element={<SellerPayoutPage />} />
+        <Route path='payouts/:id' element={<SinglePayoutPage />} />
         <Route path='orders/:id' element={<SellerOrderPage />} />
       </Route>
       <Route path='admin' element={<AdminLayout />}>
@@ -147,7 +150,8 @@ const router = createBrowserRouter(
         <Route path='orders' element={<AllOrders />} />
         <Route path='sellers' element={<AllSellers />} />
         <Route path='customers' element={<AllCustomers />} />
-        <Route path='payouts' element={<AllPayouts />} />
+        {/* <Route path='payouts' element={<AllPayouts />} /> */}
+        <Route path='payouts' element={<AdminPayoutPage />} />
         <Route path='orders/:id' element={<AdminOrderPage />} />
         <Route path='store/:id' element={<StorePage />} />
         <Route path='customers/:id' element={<CustomerPage />} />

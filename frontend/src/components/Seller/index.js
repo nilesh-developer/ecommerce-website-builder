@@ -30,6 +30,7 @@ import SellerOrderPage from "../../pages/Seller/SellerOrderPage";
 import AddPaymentDetails from "../../pages/Seller/AddPaymentDetails";
 import SellerPayoutPage from "../../pages/Seller/SellerPayoutPage";
 import RequestPayoutModal from "./RequestPayoutModel";
+import SinglePayoutPage from "../../pages/Seller/SinglePayoutPage";
 import Subscriptions from "../../pages/Seller/Subscriptions";
 
 export {
@@ -46,6 +47,7 @@ export {
     UserProfile,
     SellerPayoutPage,
     RequestPayoutModal,
+    SinglePayoutPage,
     CustomizeStore,
     CustomizeBanner,
     CustomizeFooter,

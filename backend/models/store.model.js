@@ -12,6 +12,9 @@ const StoreSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "users"
     },
+    email:{
+        type: String,
+    },
     businessName: {
         type: String,
     },

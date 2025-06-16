@@ -32,9 +32,12 @@ const createStore = asyncHandler(async (req, res) => {
             )
     }
 
+    const user = await users.findById(owner)
+
     const storeCreated = await stores.create({
         storename,
         owner,
+        email: user.email,
         name,
         subdomain: subdomain.toLowerCase(),
         metaTitle: name,
@@ -42,8 +45,6 @@ const createStore = asyncHandler(async (req, res) => {
         favicon: "",
         banner: ""
     })
-
-    const user = await users.findById(owner)
 
     user.store = storeCreated._id
     await user.save()

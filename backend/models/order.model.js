@@ -47,6 +47,10 @@ const OrderSchema = new mongoose.Schema({
             type: String
         },
     },
+    commission: {
+        type: Number,
+        default: 0
+    },
     email: {
         type: String,
         required: true
@@ -91,6 +95,9 @@ const OrderSchema = new mongoose.Schema({
     },
     coupon: {
         type: String
+    },
+    deliverDate: {
+        type: Date
     },
     isTrackingDetailsProvided: {
         type: Boolean,

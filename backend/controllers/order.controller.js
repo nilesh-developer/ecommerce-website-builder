@@ -71,6 +71,7 @@ const initiatePayment = asyncHandler(async (req, res) => {
             discountValue: orderData?.discountValue,
             coupon: orderData?.coupon,
             product: orderData?.cart,
+            commission: Number(orderData?.totalPrice) * 5 / 100,
             payoutAmount: Number(Number(orderData?.totalPrice) - (Number(orderData?.totalPrice) * 5 / 100)),
             status: "pending",
             paymentOrderId,
@@ -1607,6 +1608,11 @@ const updateStatus = asyncHandler(async (req, res) => {
     const date = new Date(orderData.createdAt);
 
     if (updatedStatus.status === "delivered") {
+        const currentDate = new Date()
+
+        const updateDeliveryDate = await orders.findOneAndUpdate({ _id: orderId }, {
+            deliverDate: currentDate
+        })
 
         if (updatedStatus.paymentMethod === "cashfree" && updatedStatus.paymentProcess === "completed") {
             const store = await stores.findById(orderData?.store?._id)

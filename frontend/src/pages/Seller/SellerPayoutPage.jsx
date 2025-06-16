@@ -84,9 +84,15 @@ const SellerPayoutPage = () => {
               <div className="text-3xl font-bold text-gray-900 mb-2">₹{user?.store?.pendingPayout?.amount}</div>
               <div className="text-gray-500">Payable Payout</div>
             </div>
-            <button onClick={handleRequestPayout} className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded transition-colors">
-              REQUEST
-            </button>
+            {user?.store?.pendingPayout?.amount === 0 ?
+              <button onClick={handleRequestPayout} disabled className="w-full bg-gray-500 text-white font-medium py-2 px-4 rounded transition-colors">
+                REQUEST
+              </button>
+              :
+              <button onClick={handleRequestPayout} className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded transition-colors">
+                REQUEST
+              </button>
+            }
           </div>
 
           <div className="bg-white rounded-lg border border-zinc-200 p-6">
@@ -205,7 +211,7 @@ const SellerPayoutPage = () => {
                         {payout?.status?.toUpperCase()}
                       </td>
                       <td colSpan="1" className="px-6 py-3 text-gray-800">
-                        <button className='bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded-md'>ACTION</button>
+                        <button onClick={() =>  navigate(`${payout._id}`)} className='bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-md'>View Details</button>
                       </td>
                     </tr>
                   ))
