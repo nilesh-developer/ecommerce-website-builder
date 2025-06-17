@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { useNavigate } from 'react-router-dom';
 
 const AdminPayoutPage = () => {
     const [selectedPayout, setSelectedPayout] = useState(null);
@@ -18,86 +19,6 @@ const AdminPayoutPage = () => {
     });
     const [isLoading, setIsLoading] = useState(true)
     const [btnLoading, setBtnLoading] = useState(false)
-
-    // Mock payout requests data
-    //   const [payoutRequests, setPayoutRequests] = useState([
-    //     {
-    //       _id: "p1",
-    //       store: {
-    //         _id: "s1",
-    //         name: "Tech Gadgets Store",
-    //         email: "store@techgadgets.com",
-    //         phone: "+91 9876543210"
-    //       },
-    //       orders: [
-    //         { _id: "o1", orderNumber: "ORD-001", amount: 2500, customerName: "John Doe" },
-    //         { _id: "o2", orderNumber: "ORD-002", amount: 1800, customerName: "Jane Smith" },
-    //         { _id: "o3", orderNumber: "ORD-003", amount: 3200, customerName: "Mike Johnson" }
-    //       ],
-    //       amount: 7500,
-    //       status: "requested",
-    //       paymentMethod: "",
-    //       paymentTransactionNo: "",
-    //       requestDate: "2024-06-15T10:30:00Z",
-    //       lastUpdated: "2024-06-15T10:30:00Z"
-    //     },
-    //     {
-    //       _id: "p2",
-    //       store: {
-    //         _id: "s2",
-    //         name: "Fashion Hub",
-    //         email: "contact@fashionhub.com",
-    //         phone: "+91 9876543211"
-    //       },
-    //       orders: [
-    //         { _id: "o4", orderNumber: "ORD-004", amount: 4500, customerName: "Sarah Wilson" },
-    //         { _id: "o5", orderNumber: "ORD-005", amount: 2200, customerName: "David Brown" }
-    //       ],
-    //       amount: 6700,
-    //       status: "processing",
-    //       paymentMethod: "Bank Transfer",
-    //       paymentTransactionNo: "TXN123456789",
-    //       requestDate: "2024-06-12T14:20:00Z",
-    //       lastUpdated: "2024-06-14T09:15:00Z"
-    //     },
-    //     {
-    //       _id: "p3",
-    //       store: {
-    //         _id: "s3",
-    //         name: "Home Essentials",
-    //         email: "info@homeessentials.com",
-    //         phone: "+91 9876543212"
-    //       },
-    //       orders: [
-    //         { _id: "o6", orderNumber: "ORD-006", amount: 3800, customerName: "Lisa Garcia" }
-    //       ],
-    //       amount: 3800,
-    //       status: "completed",
-    //       paymentMethod: "UPI",
-    //       paymentTransactionNo: "UPI987654321",
-    //       requestDate: "2024-06-08T11:45:00Z",
-    //       lastUpdated: "2024-06-10T16:30:00Z"
-    //     },
-    //     {
-    //       _id: "p4",
-    //       store: {
-    //         _id: "s4",
-    //         name: "Electronics World",
-    //         email: "sales@electronicsworld.com",
-    //         phone: "+91 9876543213"
-    //       },
-    //       orders: [
-    //         { _id: "o7", orderNumber: "ORD-007", amount: 5600, customerName: "Robert Kumar" },
-    //         { _id: "o8", orderNumber: "ORD-008", amount: 2800, customerName: "Priya Sharma" }
-    //       ],
-    //       amount: 8400,
-    //       status: "accepted",
-    //       paymentMethod: "",
-    //       paymentTransactionNo: "",
-    //       requestDate: "2024-06-13T16:45:00Z",
-    //       lastUpdated: "2024-06-14T10:20:00Z"
-    //     }
-    //   ]);
 
     const [payoutRequests, setPayoutRequests] = useState([]);
 
@@ -122,6 +43,7 @@ const AdminPayoutPage = () => {
     }
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         getAllPayoutData()
     }, [])
 
@@ -283,7 +205,7 @@ const AdminPayoutPage = () => {
         payoutRequests.forEach(payout => {
             const payoutData = [
                 payout.store._id,
-                "Rs. "+payout.amount,
+                "Rs. " + payout.amount,
                 payout.orders.length,
                 formatDate(payout.createdAt),
                 payout.paymentMethod ? payout.paymentMethod.toUpperCase() : "-",
@@ -431,7 +353,7 @@ const AdminPayoutPage = () => {
                             <select
                                 value={transactionDetails.paymentMethod}
                                 onChange={(e) => setTransactionDetails(prev => ({ ...prev, paymentMethod: e.target.value }))}
-                                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full border border-gray-300 rounded-md px-3 py-2"
                             >
                                 <option value="">Select Payment Method</option>
                                 <option value="Bank Transfer">Bank Transfer</option>
@@ -485,19 +407,19 @@ const AdminPayoutPage = () => {
     );
 
     return (
-        <div data-theme="light" className="min-h-screen bg-gray-50 p-6">
+        <div data-theme="light" className="min-h-screen bg-gray-50 px-3 py-3 pb-28 lg:p-6">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-center justify-between mb-6">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin - Payout Management</h1>
+                            <h1 className="text-3xl font-bold text-gray-900 mb-2">Payout Management</h1>
                             <p className="text-gray-600">Manage seller payout requests and transactions</p>
                         </div>
                         <div className="flex items-center space-x-4">
                             <button onClick={generatePDF} className="flex items-center bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded transition-colors">
                                 <Download className="w-4 h-4 mr-2" />
-                                Export Data
+                                Payouts
                             </button>
                         </div>
                     </div>
@@ -551,13 +473,13 @@ const AdminPayoutPage = () => {
                                 placeholder="Search by store name or email..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md"
                             />
                         </div>
                         <select
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value)}
-                            className="border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="border border-gray-300 rounded-md px-3 py-2"
                         >
                             <option value="all">All Status</option>
                             <option value="requested">Requested</option>

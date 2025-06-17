@@ -23,32 +23,32 @@ const StoreBuilderLanding = () => {
 
   const features = [
     {
-      icon: <Zap className="text-black" size={32} />,
+      icon: <Zap className="text-white" size={32} />,
       title: "Launch in Seconds",
       description: "Create your professional online store instantly with our intuitive builder"
     },
     {
-      icon: <Globe className="text-black" size={32} />,
+      icon: <Globe className="text-white" size={32} />,
       title: "Free Subdomain + Custom Domain",
       description: "Get yourstore.ourplatform.com free, or connect your own domain"
     },
     {
-      icon: <CreditCard className="text-black" size={32} />,
+      icon: <CreditCard className="text-white" size={32} />,
       title: "Built-in Payment Gateway",
       description: "Accept payments instantly with our integrated payment system"
     },
     {
-      icon: <Shield className="text-black" size={32} />,
+      icon: <Shield className="text-white" size={32} />,
       title: "No Subscription Fees",
       description: "Only 5% on successful online payments. No hidden costs or monthly fees"
     },
     {
-      icon: <Smartphone className="text-black" size={32} />,
+      icon: <Smartphone className="text-white" size={32} />,
       title: "Social Media Ready",
       description: "Perfect for creators and influencers to monetize their audience"
     },
     {
-      icon: <TrendingUp className="text-black" size={32} />,
+      icon: <TrendingUp className="text-white" size={32} />,
       title: "Weekly Payouts",
       description: "Get paid weekly directly to your bank account"
     }
@@ -109,7 +109,7 @@ const StoreBuilderLanding = () => {
           </h1>
           <p className="text-lg md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">Perfect for creators, influencers & small businesses. No subscription fees. Get your free subdomain and start selling in seconds.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Link to="/signup" className="group bg-gradient-to-r from-orange-500 to-orange-600 text-black px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md flex items-center justify-center"><button >Create Store Now<ArrowRight className="inline-block ml-2 group-hover:translate-x-1 transition-transform" /></button></Link>
+            <Link to="/signup" className="group bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md flex items-center justify-center"><button >Create Store Now<ArrowRight className="inline-block ml-2 group-hover:translate-x-1 transition-transform" /></button></Link>
             <Link to="https://youtu.be/JJ-WRmY9iJc?si=PMrf930XP3E9XgYv" className="group flex items-center justify-center px-8 py-4 rounded-full text-lg font-semibold border border-orange-500/40 hover:border-orange-400 backdrop-blur-sm hover:bg-orange-500/5 transition-all text-black"><Play className="mr-2 group-hover:scale-110 transition-transform" size={20} /> Watch Demo</Link>
           </div>
           <div className="flex flex-wrap justify-center gap-6 text-gray-600">
@@ -155,17 +155,17 @@ const StoreBuilderLanding = () => {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center group">
-              <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 text-black font-bold text-xl group-hover:scale-110 transition-transform">1</div>
+              <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl group-hover:scale-110 transition-transform">1</div>
               <h3 className="text-2xl font-bold mb-4 text-black">Sign Up & Create</h3>
               <p className="text-gray-700">Register in seconds and use our drag-and-drop builder to create your store</p>
             </div>
             <div className="text-center group">
-              <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 text-black font-bold text-xl group-hover:scale-110 transition-transform">2</div>
+              <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl group-hover:scale-110 transition-transform">2</div>
               <h3 className="text-2xl font-bold mb-4 text-black">Add Products & Share</h3>
               <p className="text-gray-700">Upload your products and share your store link on social media</p>
             </div>
             <div className="text-center group">
-              <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 text-black font-bold text-xl group-hover:scale-110 transition-transform">3</div>
+              <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl group-hover:scale-110 transition-transform">3</div>
               <h3 className="text-2xl font-bold mb-4 text-black">Get Paid Weekly</h3>
               <p className="text-gray-700">Receive payments every week minus our 5% fee on successful transactions</p>
             </div>
@@ -198,7 +198,7 @@ const StoreBuilderLanding = () => {
                 </div>
               ))}
             </div>
-            <Link to="/signup" ><button className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-black px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md">Start Building Your Store</button></Link>
+            <Link to="/signup" ><button className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md">Start Building Your Store</button></Link>
           </div>
         </div>
       </section>
@@ -232,7 +232,7 @@ const StoreBuilderLanding = () => {
           <h2 className="text-4xl md:text-6xl font-bold mb-6"><span className="bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent animate-gradient">Ready to Start Selling?</span></h2>
           <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">Join thousands of creators and small businesses who are already making money with their online stores</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/signup" className="bg-gradient-to-r from-orange-500 to-orange-600 text-black px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md"><button>Create Your Store Now</button></Link>
+            <Link to="/signup" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md"><button>Create Your Store Now</button></Link>
             <Link to="/contact-us" className="px-8 py-4 rounded-full text-lg font-semibold border border-orange-500/40 hover:border-orange-400 backdrop-blur-sm hover:bg-orange-500/5 transition-all text-black">Talk to Sales</Link>
           </div>
         </div>
