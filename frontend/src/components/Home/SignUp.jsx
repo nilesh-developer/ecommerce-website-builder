@@ -33,6 +33,10 @@ function SignUp() {
 
     const sendOTP = async (e) => {
         e.preventDefault();
+        if (!user.email || !user.password) {
+            toast.error("All feilds are required")
+            return
+        }
         try {
             setLoadingBtn(true)
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/sendotp`, {
@@ -61,6 +65,15 @@ function SignUp() {
 
     const verifyOtp = async (e) => {
         e.preventDefault()
+        if (!user.email || !user.password) {
+            toast.error("All feilds are required")
+            return
+        }
+
+        if (!otp) {
+            toast.error("Invalid OTP")
+            return
+        }
         try {
             setLoadingBtn(true)
             const otpToken = localStorage.getItem('code');

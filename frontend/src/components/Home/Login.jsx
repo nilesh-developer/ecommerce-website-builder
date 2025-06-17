@@ -35,6 +35,10 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        if(!user.email || !user.password){
+            toast.error("All feilds are required")
+            return
+        }
         setLoadingBtn(true)
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/login`, {
