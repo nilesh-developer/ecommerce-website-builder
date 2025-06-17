@@ -39,9 +39,8 @@ const HeaderLanding = () => {
             <Link to="/seller/dashboard" className="text-sm font-semibold leading-6 text-orange-600">Account <span aria-hidden="true">&rarr;</span></Link>
             :
             <>
-              {/* <Link to="/signup" className="text-sm font-semibold leading-6 text-orange-600">Sign Up <span aria-hidden="true">&rarr;</span></Link>
-              <Link to="/login" className="text-sm font-semibold leading-6 text-orange-600">Login <span aria-hidden="true">&rarr;</span></Link> */}
-              <a href="/login" className="text-sm font-semibold leading-6 text-orange-600">Log In<span aria-hidden="true">&rarr;</span></a>
+              {/* <Link to="/signup" className="text-sm font-semibold leading-6 text-orange-600">Sign Up <span aria-hidden="true">&rarr;</span></Link> */}
+              <Link to="/login" className="text-sm font-semibold leading-6 text-orange-600">Login <span aria-hidden="true">&rarr;</span></Link>
             </>
           }
         </div>
@@ -72,7 +71,10 @@ const HeaderLanding = () => {
             {token ?
               <Link to="/seller/dashboard" className="block text-sm font-semibold leading-6 text-orange-600">Account <span aria-hidden="true">&rarr;</span></Link>
               :
-              <Link to="/signup" className="block text-sm font-semibold leading-6 text-orange-600">Sign Up <span aria-hidden="true">&rarr;</span></Link>
+              <>
+                <Link to="/login" className="block text-sm font-semibold leading-6 hover:text-orange-600 transition-colors">Login</Link>
+                <Link to="/signup" className="block text-sm font-semibold leading-6 text-orange-600">Sign Up</Link>
+              </>
             }
           </div>
         </div>
