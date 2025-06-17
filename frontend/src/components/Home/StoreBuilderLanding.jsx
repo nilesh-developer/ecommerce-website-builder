@@ -109,8 +109,10 @@ const StoreBuilderLanding = () => {
           </h1>
           <p className="text-lg md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">Perfect for creators, influencers & small businesses. No subscription fees. Get your free subdomain and start selling in seconds.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Link to="/signup" className="group bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md flex items-center justify-center"><button >Create Store Now<ArrowRight className="inline-block ml-2 group-hover:translate-x-1 transition-transform" /></button></Link>
-            <Link to="https://youtu.be/JJ-WRmY9iJc?si=PMrf930XP3E9XgYv" className="group flex items-center justify-center px-8 py-4 rounded-full text-lg font-semibold border border-orange-500/40 hover:border-orange-400 backdrop-blur-sm hover:bg-orange-500/5 transition-all text-black"><Play className="mr-2 group-hover:scale-110 transition-transform" size={20} /> Watch Demo</Link>
+            {/* <Link to="/signup" className="group bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md flex items-center justify-center"><button >Create Store Now<ArrowRight className="inline-block ml-2 group-hover:translate-x-1 transition-transform" /></button></Link>
+            <Link to="https://youtu.be/JJ-WRmY9iJc?si=PMrf930XP3E9XgYv" className="group flex items-center justify-center px-8 py-4 rounded-full text-lg font-semibold border border-orange-500/40 hover:border-orange-400 backdrop-blur-sm hover:bg-orange-500/5 transition-all text-black"><Play className="mr-2 group-hover:scale-110 transition-transform" size={20} /> Watch Demo</Link> */}
+            <a href="/signup" className="group bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md flex items-center justify-center"><button >Create Store Now<ArrowRight className="inline-block ml-2 group-hover:translate-x-1 transition-transform" /></button></a>
+            <a href="https://youtu.be/JJ-WRmY9iJc?si=PMrf930XP3E9XgYv" className="group flex items-center justify-center px-8 py-4 rounded-full text-lg font-semibold border border-orange-500/40 hover:border-orange-400 backdrop-blur-sm hover:bg-orange-500/5 transition-all text-black"><Play className="mr-2 group-hover:scale-110 transition-transform" size={20} /> Watch Demo</a>
           </div>
           <div className="flex flex-wrap justify-center gap-6 text-gray-600">
             <div className="flex items-center"><Check className="text-orange-500 mr-2" size={16} />No Setup Fees</div>
@@ -198,7 +200,8 @@ const StoreBuilderLanding = () => {
                 </div>
               ))}
             </div>
-            <Link to="/signup" ><button className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md">Start Building Your Store</button></Link>
+            {/* <Link to="/signup" ><button className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md">Start Building Your Store</button></Link> */}
+            <a href="/signup" ><button className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md">Start Building Your Store</button></a>
           </div>
         </div>
       </section>
@@ -232,8 +235,10 @@ const StoreBuilderLanding = () => {
           <h2 className="text-4xl md:text-6xl font-bold mb-6"><span className="bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent animate-gradient">Ready to Start Selling?</span></h2>
           <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">Join thousands of creators and small businesses who are already making money with their online stores</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/signup" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md"><button>Create Your Store Now</button></Link>
-            <Link to="/contact-us" className="px-8 py-4 rounded-full text-lg font-semibold border border-orange-500/40 hover:border-orange-400 backdrop-blur-sm hover:bg-orange-500/5 transition-all text-black">Talk to Sales</Link>
+            {/* <Link to="/signup" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md"><button>Create Your Store Now</button></Link>
+            <Link to="/contact-us" className="px-8 py-4 rounded-full text-lg font-semibold border border-orange-500/40 hover:border-orange-400 backdrop-blur-sm hover:bg-orange-500/5 transition-all text-black">Talk to Sales</Link> */}
+            <a href="/signup" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-400 hover:to-orange-500 transition-all transform hover:scale-105 shadow-md"><button>Create Your Store Now</button></a>
+            <a href="/contact-us" className="px-8 py-4 rounded-full text-lg font-semibold border border-orange-500/40 hover:border-orange-400 backdrop-blur-sm hover:bg-orange-500/5 transition-all text-black">Talk to Sales</a>
           </div>
         </div>
       </section>

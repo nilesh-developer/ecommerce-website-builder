@@ -6,7 +6,7 @@ import { useAuth } from '../../store/auth';
 const HeaderLanding = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mobileDropdown, setMobileDropdown] = useState(false);
-   const { token } = useAuth()
+  const { token } = useAuth()
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-lg border-b border-orange-600/20 shadow-md`}>
@@ -15,7 +15,6 @@ const HeaderLanding = () => {
           <Link to="/" className="-m-1.5 p-1.5 flex items-center">
             <img className="h-10 w-auto" src="/eazzy.png" alt="Eazzy" />
           </Link>
-          {/* <span className="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">StoreBuilder</span> */}
         </div>
         <div className="hidden md:flex items-center space-x-8">
           <Link to="/" className="text-sm font-semibold leading-6 hover:text-orange-600 transition-colors">Home</Link>
@@ -32,12 +31,18 @@ const HeaderLanding = () => {
               <li><Link to="/cookie-policy" className="block px-4 py-2 text-sm font-semibold rounded-md hover:bg-zinc-100 text-zinc-900 hover:text-orange-600">Cookie Policy</Link></li>
             </ul>
           </div>
-          <Link to="/contact-us" className="text-sm font-semibold leading-6 hover:text-orange-600 transition-colors">Contact Us</Link>
-          <Link to="/about-us" className="text-sm font-semibold leading-6 hover:text-orange-600 transition-colors">About Us</Link>
+          {/* <Link to="/contact-us" className="text-sm font-semibold leading-6 hover:text-orange-600 transition-colors">Contact Us</Link>
+          <Link to="/about-us" className="text-sm font-semibold leading-6 hover:text-orange-600 transition-colors">About Us</Link> */}
+          <a href="/contact-us" className="text-sm font-semibold leading-6 hover:text-orange-600 transition-colors">Contact Us</a>
+          <a href="/about-us" className="text-sm font-semibold leading-6 hover:text-orange-600 transition-colors">About Us</a>
           {token ?
-          <Link to="/seller/dashboard" className="text-sm font-semibold leading-6 text-orange-600">Account <span aria-hidden="true">&rarr;</span></Link>
-          :
-          <Link to="/signup" className="text-sm font-semibold leading-6 text-orange-600">Sign Up <span aria-hidden="true">&rarr;</span></Link>
+            <Link to="/seller/dashboard" className="text-sm font-semibold leading-6 text-orange-600">Account <span aria-hidden="true">&rarr;</span></Link>
+            :
+            <>
+              {/* <Link to="/signup" className="text-sm font-semibold leading-6 text-orange-600">Sign Up <span aria-hidden="true">&rarr;</span></Link>
+              <Link to="/login" className="text-sm font-semibold leading-6 text-orange-600">Login <span aria-hidden="true">&rarr;</span></Link> */}
+              <a href="/login" className="text-sm font-semibold leading-6 text-orange-600">Log In<span aria-hidden="true">&rarr;</span></a>
+            </>
           }
         </div>
         <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -64,11 +69,11 @@ const HeaderLanding = () => {
             </div>
             <Link to="/contact-us" className="block text-sm font-semibold leading-6 hover:text-orange-600 transition-colors">Contact Us</Link>
             <Link to="/about-us" className="block text-sm font-semibold leading-6 hover:text-orange-600 transition-colors">About Us</Link>
-            {token ? 
-            <Link to="/seller/dashboard" className="block text-sm font-semibold leading-6 text-orange-600">Account <span aria-hidden="true">&rarr;</span></Link>
-:
-            <Link to="/signup" className="block text-sm font-semibold leading-6 text-orange-600">Sign Up <span aria-hidden="true">&rarr;</span></Link>
-}
+            {token ?
+              <Link to="/seller/dashboard" className="block text-sm font-semibold leading-6 text-orange-600">Account <span aria-hidden="true">&rarr;</span></Link>
+              :
+              <Link to="/signup" className="block text-sm font-semibold leading-6 text-orange-600">Sign Up <span aria-hidden="true">&rarr;</span></Link>
+            }
           </div>
         </div>
       )}

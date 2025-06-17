@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast';
 import { useAuth } from '../../store/auth'
 import { useEffect } from 'react';
+import { Helmet } from "react-helmet"
 
 function SignUp() {
     const [user, setUser] = useState({
@@ -18,7 +19,7 @@ function SignUp() {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    },[])
+    }, [])
 
     const handleInput = (e) => {
         let name = e.target.name;
@@ -113,40 +114,11 @@ function SignUp() {
         }
     }
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault()
-    //     try {
-    //         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/register`, {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json"
-    //             },
-    //             body: JSON.stringify(user)
-    //         })
-
-    //         setUser({
-    //             email: "",
-    //             password: ""
-    //         })
-
-    //         const responseData = await response.json()
-
-    //         if (response.ok) {
-    //             setUserId(responseData.data.user._id)
-    //             storeTokenInLS(responseData.data.token)
-    //             toast.success(responseData.message)
-    //             navigate("/create-store")
-    //         } else {
-    //             toast.error(responseData.message)
-    //         }
-
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-
     return (
         <>
+            <Helmet>
+                <title>Sign Up</title>
+            </Helmet>
             <div className='flex flex-wrap justify-center items-center h-auto py-10 mt-10'>
                 <div className="w-96 mx-auto bg-white p-8 rounded-2xl shadow-none lg:shadow-md">
                     <h1 className="text-3xl text-black font-bold mb-6 flex flex-wrap justify-center">Sign Up</h1>
