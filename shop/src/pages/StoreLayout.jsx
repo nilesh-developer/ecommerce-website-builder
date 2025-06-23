@@ -38,7 +38,7 @@ export default function StoreLayout() {
     getThemeColor();
   }, []);
 
-  changeFavicon(store.favicon);
+  changeFavicon(store?.favicon);
 
   const handleSearch = () => {
     setOpenSearch(false)
