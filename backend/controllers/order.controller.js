@@ -19,6 +19,7 @@ const options = {
 Cashfree.XClientId = process.env.CASHFREE_CLIENT_ID;
 Cashfree.XClientSecret = process.env.CASHFREE_CLIENT_SECRET;
 Cashfree.XEnvironment = Cashfree.Environment.PRODUCTION;
+// Cashfree.XEnvironment = Cashfree.Environment.SANDBOX; // Use SANDBOX for testing
 
 function generateOrderId() {
     const uniqueId = crypto.randomBytes(16).toString('hex');
@@ -119,16 +120,17 @@ const verifyPayment = asyncHandler(async (req, res) => {
 
     const updateOrderPaymentStatusInDB = async (response) => {
         try {
-            const dbOrderData = await orders.updateMany(
+
+            const dbOrderData = await orders.findOneAndUpdate(
                 { paymentOrderId: orderId },
-                { $set: { paymentProcess: response[0]?.payment_status === "SUCCESS" ? "completed" : "failed", status: response[0]?.payment_status === "SUCCESS" ? "pending" : "canceled" } }
+                { $set: { paymentProcess: response?.payment_status === "SUCCESS" ? "completed" : "failed", status: response?.payment_status === "SUCCESS" ? "pending" : "canceled" } }
             );
 
             if (!dbOrderData) {
                 console.log("Order Payment Status in DB is not Updated")
             }
 
-            if (response[0]?.payment_status === "SUCCESS") {
+            if (response?.payment_status === "SUCCESS") {
                 const store = await stores.findById(dbOrderData.store)
                 store.revenue = Number(store.revenue) + Number(dbOrderData.totalPrice)
                 store.pendingPayoutOfOrderNotDelivered.orders.push(dbOrderData._id)
@@ -148,7 +150,7 @@ const verifyPayment = asyncHandler(async (req, res) => {
     }
 
     const transactionFailed = async () => {
-        const dbOrderData = await orders.updateMany(
+        const dbOrderData = await orders.findOneAndUpdate(
             { paymentOrderId: orderId },
             { $set: { paymentProcess: "failed", status: "canceled" } }
         );
@@ -159,7 +161,7 @@ const verifyPayment = asyncHandler(async (req, res) => {
     }
 
     Cashfree.PGOrderFetchPayments("2023-08-01", orderId).then(async (response) => {
-        await updateOrderPaymentStatusInDB(response)
+        await updateOrderPaymentStatusInDB(response.data[0])
     }).catch(async (error) => {
         await transactionFailed()
         console.error(error.response.data.message);
@@ -188,7 +190,7 @@ const cashfreePaymentDetails = asyncHandler(async (req, res) => {
             order.paymentDetails.paymentTime = payment_time;
             order.paymentDetails.paymentId = cf_payment_id;
 
-            const itemsHTML = matchedOrders?.product?.map((product) => `
+            const itemsHTML = order?.product?.map((product) => `
     <tr>
         <td>${product?.name}</td>
         <td>${product?.quantity}</td>
@@ -211,7 +213,7 @@ const cashfreePaymentDetails = asyncHandler(async (req, res) => {
             const receiver = {
                 from: `${matchedOrders?.store.name} <${process.env.OTP_EMAIL_ID}>`,
                 to: matchedOrders?.email,
-                subject: `Your Order for ${matchedOrders?.product[0].name} has been successfully placed`,
+                subject: `Your Order for ${order?.product[0].name} has been successfully placed`,
                 html: `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -289,7 +291,7 @@ const cashfreePaymentDetails = asyncHandler(async (req, res) => {
 
     <div class="email-container">
         <h1>Order Confirmation - Thank You for Your Purchase!</h1>
-        <p>Dear ${matchedOrders?.name},</p>
+        <p>Dear ${order?.name},</p>
         <p>We are pleased to confirm that your order has been successfully placed. Thank you for shopping with us!</p>
         
         <div class="order-details">
@@ -297,7 +299,7 @@ const cashfreePaymentDetails = asyncHandler(async (req, res) => {
             <table>
                 <tr>
                     <th>Order Number</th>
-                    <td>${matchedOrders?._id}</td>
+                    <td>${order?._id}</td>
                 </tr>
                 <tr>
                     <th>Order Date</th>
@@ -306,7 +308,7 @@ const cashfreePaymentDetails = asyncHandler(async (req, res) => {
                 </tr >
     <tr>
         <th>Payment Method</th>
-        <td>${matchedOrders?.paymentMethod}</td>
+        <td>${order?.paymentMethod}</td>
     </tr>
             </table >
         </div >
@@ -324,7 +326,10 @@ const cashfreePaymentDetails = asyncHandler(async (req, res) => {
         </div>
         
         <div class="order-summary">
-            <p><strong>Total Amount: </strong> &#8377;${matchedOrders?.totalPrice}</p>
+            <p><strong>Subtotal: </strong> &#8377;${order?.productTotals}</p>
+            <p><strong>Discount: </strong> &#8377;${order?.discountValue}</p>
+            <p><strong>Delivery: </strong> &#8377;${order?.deliveryCharge}</p>
+            <p><strong>Total Amount: </strong> &#8377;${order?.totalPrice}</p>
         </div>
 
         <p>Your order will be processed and shipped shortly. You can track your order status by logging into your account.</p>
@@ -351,7 +356,7 @@ const cashfreePaymentDetails = asyncHandler(async (req, res) => {
             })
 
             const sellerReceiver = {
-                from: `Eazzy < ${process.env.OTP_EMAIL_ID}> `,
+                from: `Growo <${process.env.OTP_EMAIL_ID}> `,
                 to: store.owner.email,
                 subject: `Order received from your store ${store.name} !`,
                 html: `<!DOCTYPE html>
@@ -428,19 +433,19 @@ const cashfreePaymentDetails = asyncHandler(async (req, res) => {
             <table>
                 <tr>
                     <th>Order Number</th>
-                    <td>${matchedOrders?._id}</td>
+                    <td>${order?._id}</td>
                 </tr>
                 <tr>
                     <th>Customer Name</th>
-                    <td>${matchedOrders?.name}</td>
+                    <td>${order?.name}</td>
                 </tr>
                 <tr>
                     <th>Customer Email</th>
-                    <td>${matchedOrders?.email}</td>
+                    <td>${order?.email}</td>
                 </tr>
                 <tr>
                     <th>Customer Mobile no.</th>
-                    <td>${matchedOrders?.phoneNo}</td>
+                    <td>${order?.phoneNo}</td>
                 </tr>
             </table>
         </div>
@@ -457,18 +462,21 @@ const cashfreePaymentDetails = asyncHandler(async (req, res) => {
         </div>
         <div class="order-summary">
         <strong>Shipping address: </strong>
-            <p>${matchedOrders?.address1},
-                ${matchedOrders?.address2},
-                ${matchedOrders?.state},
-                ${matchedOrders?.country},
-                ${matchedOrders?.pinCode}</p>
+            <p>${order?.address1},
+                ${order?.address2},
+                ${order?.state},
+                ${order?.country},
+                ${order?.pinCode}</p>
         </div>
         <div class="order-summary">
-            <p><strong>Total Amount: </strong>&#8377;${matchedOrders?.totalPrice}</p>
+            <p><strong>Subtotal: </strong> &#8377;${order?.productTotals}</p>
+            <p><strong>Discount: </strong> &#8377;${order?.discountValue}</p>
+            <p><strong>Delivery: </strong> &#8377;${order?.deliveryCharge}</p>
+            <p><strong>Total Amount: </strong> &#8377;${order?.totalPrice}</p>
         </div>
         <p>To view the order details, please log in to your seller dashboard.</p>
         <div class="button-container">
-            <a href="https://eazzy.store/seller/orders/${matchedOrders?._id}" target="_blank">View Order</a>
+            <a href="https://growo.store/seller/orders/${order?._id}" target="_blank">View Order</a>
         </div>
         <p>If you have any questions, feel free to contact us at <a href="mailto:${process.env.OTP_EMAIL_ID}">email</a>.</p>
     </div>
@@ -488,302 +496,6 @@ const cashfreePaymentDetails = asyncHandler(async (req, res) => {
             order.status = 'failed';
             order.paymentProcess = 'failed';
             order.paymentDetails.paymentProcess = 'failed';
-
-            const itemsHTML = matchedOrders?.product?.map((product) => `
-    <tr>
-        <td>${product?.name}</td>
-        <td>${product?.quantity}</td>
-        <td>&#8377;${product?.salePrice}</td>
-    </tr>
-`).join('');
-
-
-            const emailProvider = nodeMailer.createTransport({
-                service: "gmail",
-                secure: true,
-                port: 465,
-                auth: {
-                    user: process.env.OTP_EMAIL_ID,
-                    pass: process.env.OTP_EMAIL_PASS
-                },
-                tls: { rejectUnauthorized: false }
-            })
-
-            const receiver = {
-                from: `${matchedOrders?.store.name} <${process.env.OTP_EMAIL_ID}>`,
-                to: matchedOrders?.email,
-                subject: `Your Order for ${matchedOrders?.product[0].name} has been successfully placed`,
-                html: `<!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Order Confirmation</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    background-color: #f4f4f4;
-                    margin: 0;
-                    padding: 0;
-                    color: #333;
-                }
-                .email-container {
-                    max-width: 600px;
-                    margin: 20px auto;
-                    background-color: #fff;
-                    padding: 20px;
-                    border-radius: 8px;
-                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                }
-                h1 {
-                    font-size: 24px;
-                    color: #4CAF50;
-                }
-                p {
-                    font-size: 16px;
-                    line-height: 1.5;
-                }
-                .order-details {
-                    margin: 20px 0;
-                }
-                .order-details table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-                .order-details table, .order-details th, .order-details td {
-                    border: 1px solid #ddd;
-                }
-                .order-details th, .order-details td {
-                    padding: 10px;
-                    text-align: left;
-                }
-                .order-summary {
-                    margin: 20px 0;
-                    text-align: right;
-                }
-                .button-container {
-                    text-align: center;
-                    margin-top: 20px;
-                }
-                .button-container a {
-                    padding: 10px 20px;
-                    background-color: #4CAF50;
-                    color: #fff;
-                    text-decoration: none;
-                    border-radius: 4px;
-                    font-weight: bold;
-                }
-                .button-container a:hover {
-                    background-color: #45a049;
-                }
-                a {
-                    color: #4CAF50;
-                    text-decoration: none;
-                }
-                a:hover {
-                    text-decoration: underline;
-                }
-            </style>
-        </head>
-        <body>
-        
-            <div class="email-container">
-                <h1>Order Confirmation - Thank You for Your Purchase!</h1>
-                <p>Dear ${matchedOrders?.name},</p>
-                <p>We are pleased to confirm that your order has been successfully placed. Thank you for shopping with us!</p>
-                
-                <div class="order-details">
-                    <h2>Order Details</h2>
-                    <table>
-                        <tr>
-                            <th>Order Number</th>
-                            <td>${matchedOrders?._id}</td>
-                        </tr>
-                        <tr>
-                            <th>Order Date</th>
-                            <td>${date.toLocaleDateString('en-IN', options)}
-                            </td>
-                        </tr >
-            <tr>
-                <th>Payment Method</th>
-                <td>${matchedOrders?.paymentMethod}</td>
-            </tr>
-                    </table >
-                </div >
-                
-                <div class="order-details">
-                    <h2>Items Purchased</h2>
-                    <table>
-                        <tr>
-                            <th>Item</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                        </tr>
-                        ${itemsHTML}
-                    </table>
-                </div>
-                
-                <div class="order-summary">
-                    <p><strong>Total Amount: </strong> &#8377;${matchedOrders?.totalPrice}</p>
-                </div>
-        
-                <p>Your order will be processed and shipped shortly. You can track your order status by logging into your account.</p>
-        
-                <p>If you have any questions, feel free to contact our customer service team at 
-                    <a href="mailto:${store?.owner?.email}">email</a>.
-                </p>
-        
-                <p>Thank you again for your purchase! We hope to see you again soon.</p>
-        
-                <p>Best Regards,<br>Your Store Team</p>
-                </div >
-        
-            </body >
-                    </html >`
-            }
-
-            emailProvider.sendMail(receiver, (error, emailResponse) => {
-                if (error) {
-                    console.log("Something went wrong while sending email to customer")
-                } else {
-                    console.log("Email sent successfully to customer")
-                }
-            })
-
-            const sellerReceiver = {
-                from: `Eazzy < ${process.env.OTP_EMAIL_ID}> `,
-                to: store.owner.email,
-                subject: `Order received from your store ${store.name} !`,
-                html: `<!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Order Received Notification</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    background-color: #f4f4f4;
-                    margin: 0;
-                    padding: 0;
-                    color: #333;
-                }
-                .email-container {
-                    max-width: 600px;
-                    margin: 20px auto;
-                    background-color: #fff;
-                    padding: 20px;
-                    border-radius: 8px;
-                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                }
-                h1 {
-                    font-size: 24px;
-                    color: #4CAF50;
-                }
-                p {
-                    font-size: 16px;
-                    line-height: 1.5;
-                }
-                .order-details {
-                    margin: 20px 0;
-                }
-                .order-details table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-                .order-details table, .order-details th, .order-details td {
-                    border: 1px solid #ddd;
-                }
-                .order-details th, .order-details td {
-                    padding: 10px;
-                    text-align: left;
-                }
-                .order-summary {
-                    margin: 20px 0;
-                    text-align: right;
-                }
-                .button-container {
-                    text-align: center;
-                    margin-top: 20px;
-                }
-                .button-container a {
-                    padding: 10px 20px;
-                    background-color: #4CAF50;
-                    color: #fff;
-                    text-decoration: none;
-                    border-radius: 4px;
-                    font-weight: bold;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="email-container">
-                <h1>New Order Received from Your Store!</h1>
-                <p>Dear ${store.owner.email},</p>
-                <p>We are excited to inform you that a new order has been placed on your store!</p>
-                
-                <div class="order-details">
-                    <h2>Order Details</h2>
-                    <table>
-                        <tr>
-                            <th>Order Number</th>
-                            <td>${matchedOrders?._id}</td>
-                        </tr>
-                        <tr>
-                            <th>Customer Name</th>
-                            <td>${matchedOrders?.name}</td>
-                        </tr>
-                        <tr>
-                            <th>Customer Email</th>
-                            <td>${matchedOrders?.email}</td>
-                        </tr>
-                        <tr>
-                            <th>Customer Mobile no.</th>
-                            <td>${matchedOrders?.phoneNo}</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="order-details">
-                    <h2>Items Ordered</h2>
-                    <table>
-                        <tr>
-                            <th>Item</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                        </tr>
-                        ${itemsHTML}
-                    </table>
-                </div>
-                <div class="order-summary">
-                <strong>Shipping address: </strong>
-                    <p>${matchedOrders?.address1},
-                        ${matchedOrders?.address2},
-                        ${matchedOrders?.state},
-                        ${matchedOrders?.country},
-                        ${matchedOrders?.pinCode}</p>
-                </div>
-                <div class="order-summary">
-                    <p><strong>Total Amount: </strong>&#8377;${matchedOrders?.totalPrice}</p>
-                </div>
-                <p>To view the order details, please log in to your seller dashboard.</p>
-                <div class="button-container">
-                    <a href="https://eazzy.store/seller/orders/${matchedOrders?._id}" target="_blank">View Order</a>
-                </div>
-                <p>If you have any questions, feel free to contact us at <a href="mailto:${process.env.OTP_EMAIL_ID}">email</a>.</p>
-            </div>
-            </body>
-                    </html>`
-            }
-
-            emailProvider.sendMail(sellerReceiver, (error, emailResponse) => {
-                if (error) {
-                    console.log("Something went wrong while sending email to seller")
-                } else {
-                    console.log("Email sent successfully to seller")
-                }
-            })
         }
 
         return order.save();
