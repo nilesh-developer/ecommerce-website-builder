@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom'
 
 function Category({ categories }) {
 
-    const [imageLoaded, setImageLoaded] = useState(false);
-
     return (
         <>
             <div className='mx-auto px-4 py-5 sm:px-6 sm:py-10 lg:max-w-7xl lg:px-4'>
@@ -45,12 +43,14 @@ function Category({ categories }) {
                 </div> */}
                 {/* Scrollable row on mobile */}
                 <div className="flex overflow-x-auto space-x-5 scrollbar-hide pb-3">
-                    {categories?.map((category, index) => (
+                    {categories?.map((category, index) => {
+                         const [imageLoaded, setImageLoaded] = useState(false);
+                     return (
                         <div
                             key={index}
                             className="flex-shrink-0 group relative bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100"
                         >
-                            <Link href={`/category/${category?.slug}`}>
+                            <Link to={`/category/${category._id}`}>
                                 <div className="flex flex-col items-center justify-center p-4 w-28 sm:w-40 lg:w-56">
 
                                     {/* Image */}
@@ -71,7 +71,7 @@ function Category({ categories }) {
                                 </div>
                             </Link>
                         </div>
-                    ))}
+                    )})}
                 </div>
             </div>
 
