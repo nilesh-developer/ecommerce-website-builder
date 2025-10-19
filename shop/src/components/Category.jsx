@@ -42,7 +42,7 @@ function Category({ categories }) {
                     })}
                 </div> */}
                 {/* Scrollable row on mobile */}
-                <div className="flex overflow-x-auto space-x-5 scrollbar-hide pb-3">
+                <div className="flex overflow-x-auto space-x-5 scrollbar-hide pb-3 mt-3">
                     {categories?.map((category, index) => {
                          const [imageLoaded, setImageLoaded] = useState(false);
                      return (
